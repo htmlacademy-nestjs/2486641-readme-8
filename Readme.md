@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
 * Студент: [Денис Захаров](https://up.htmlacademy.ru/nodejs-2/8/user/2486641).
-* Наставник: `Неизвестно`.
+* Наставник: [Илиас Эззахид](https://htmlacademy.ru/profile/id2588943).
 
 ---
 
