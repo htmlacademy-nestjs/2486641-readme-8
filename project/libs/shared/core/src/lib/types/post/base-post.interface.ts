@@ -3,16 +3,17 @@ import { Like } from "../like/like.interface";
 import { PostType } from "./const"
 
 export abstract class BasePost {
-  id: string;
+  id?: string;
   type: PostType;
   tags?: string[];
-  originalUserId: string;
+  originalUserId?: string;
   userId: string;
-  createDate: Date;
-  postDate: Date;
+  postDate?: Date;
   isPublished: boolean;
   isReposted: boolean;
-  originalId: string;
+  originalId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
   comments: Comment[];
   likes: Like[];
 }
