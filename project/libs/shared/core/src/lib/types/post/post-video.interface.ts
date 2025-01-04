@@ -1,6 +1,6 @@
 import { BasePost } from "./base-post.interface";
 
 export interface PostVideo extends BasePost {
-  name: string,
+  title: string,
   ulr: string
 }

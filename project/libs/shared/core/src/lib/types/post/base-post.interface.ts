@@ -4,7 +4,7 @@ import { PostType } from "./const"
 export abstract class BasePost {
   id: string;
   type: PostType;
-  tags?: string;
+  tags?: string[];
   originalUser: User;
   user: User;
   createDate: Date;

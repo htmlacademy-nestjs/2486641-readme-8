@@ -6,9 +6,69 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum PostType {
+  video
+  text
+  quote
+  photo
+  link
+}
+
+model Post {
+  id             String   @id @default(uuid())
+  type           PostType
+  tags           String[]
+  userId         String   @map("user_id")
+  originalUserId String   @map("original_user_id")
+  postDate       DateTime @map("post_date")
+  isPublished    Boolean  @map("is_published")
+  isReposted     Boolean  @map("is_reposted")
+  originalId     String   @map("original_id")
+  title          String?
+  preview        String?
+  url            String?
+  description    String?
+  text           String?
+  author         String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  comments Comment[]
+  likes    Like[]
+
+  @@index([title])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String   @map("post_id")
+  userId    String   @map("user_id")
+  text      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  post Post @relation(fields: [postId], references: [id])
+
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  postId    String   @map("post_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  post Post @relation(fields: [postId], references: [id])
+
+  @@map("likes")
 }
