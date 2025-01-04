@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../../../../node_modules/.prisma/client"
+  output   = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -27,11 +27,11 @@ model Post {
   type           PostType
   tags           String[]
   userId         String   @map("user_id")
-  originalUserId String   @map("original_user_id")
+  originalUserId String?  @map("original_user_id")
   postDate       DateTime @map("post_date")
   isPublished    Boolean  @map("is_published")
   isReposted     Boolean  @map("is_reposted")
-  originalId     String   @map("original_id")
+  originalId     String?  @map("original_id")
   title          String?
   preview        String?
   url            String?
@@ -43,6 +43,8 @@ model Post {
 
   comments Comment[]
   likes    Like[]
+  original Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
+  Post     Post[]    @relation(name: "post_original_fk")
 
   @@index([title])
   @@map("posts")
