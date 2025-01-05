@@ -1,7 +1,25 @@
-import { PostLink } from "./post-link.interface";
-import { PostPhoto } from "./post-photo.interface";
-import { PostQuote } from "./post-quote.interface";
-import { PostText } from "./post-text.interface";
-import { PostVideo } from "./post-video.interface";
+import { Comment } from "../comment/comment.interface";
+import { Like } from "../like/like.interface";
+import { AppPostType } from "./const"
 
-export type Post = PostLink | PostPhoto | PostQuote | PostText | PostVideo;
+export interface Post {
+  id?: string;
+  type: AppPostType;
+  tags?: string[];
+  originalUserId?: string;
+  userId: string;
+  postDate?: Date;
+  isPublished: boolean;
+  isReposted: boolean;
+  originalId?: string;
+  url?: string;
+  description?: string;
+  text?: string;
+  author?: string;
+  title?: string;
+  preview?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  comments: Comment[];
+  likes: Like[];
+}

@@ -41,10 +41,10 @@ model Post {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  comments Comment[]
-  likes    Like[]
-  original Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
-  Post     Post[]    @relation(name: "post_original_fk")
+  comments       Comment[]
+  likes          Like[]
+  original       Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
+  inheritedPosts Post[]    @relation(name: "post_original_fk")
 
   @@index([title])
   @@map("posts")
