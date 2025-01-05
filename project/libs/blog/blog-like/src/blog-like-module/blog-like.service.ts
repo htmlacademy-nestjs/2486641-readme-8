@@ -6,9 +6,9 @@ import { BlogLikeEntity } from './blog-like.entity';
 export class BlogLikeService {
   constructor(
     private readonly blogLikeRepository: BlogLikeRepository
-  ) {}
+  ) { }
   public async create(postId: string, userId: string): Promise<BlogLikeEntity> {
-    const newLike = new BlogLikeEntity({postId, userId})
+    const newLike = new BlogLikeEntity({ postId, userId })
     await this.blogLikeRepository.save(newLike);
     return newLike;
   }

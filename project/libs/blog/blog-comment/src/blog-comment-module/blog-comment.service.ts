@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBlogCommentDto } from './dto/create-blog-comment.dto';
-import { UpdateBlogCommentDto } from './dto/update-blog-comment.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { BlogCommentRepository } from './blog-comment.repository';
+import { BlogCommentEntity } from './blog-comment.entity';
 
 @Injectable()
 export class BlogCommentService {
-  create(createBlogCommentDto: CreateBlogCommentDto) {
-    return 'This action adds a new blogComment';
+  constructor(
+    private readonly blogCommentRepository: BlogCommentRepository
+  ) { }
+  public async create(postId: string, userId: string, dto: CreateCommentDto): Promise<BlogCommentEntity> {
+    const newComment = new BlogCommentEntity({ postId, userId, ...dto });
+    await this.blogCommentRepository.save(newComment);
+    return newComment;
   }
 
-  findAll() {
-    return `This action returns all blogComment`;
+  public async findByPostId(postId: string) {
+    return await this.blogCommentRepository.findByPostId(postId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blogComment`;
+  public async findById(id: string) {
+    return await this.blogCommentRepository.findById(id);
   }
 
-  update(id: number, updateBlogCommentDto: UpdateBlogCommentDto) {
-    return `This action updates a #${id} blogComment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} blogComment`;
+  public async remove(id: string) {
+    return await this.blogCommentRepository.deleteById(id);
   }
 }
