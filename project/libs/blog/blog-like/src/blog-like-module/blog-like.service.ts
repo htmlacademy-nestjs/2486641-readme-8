@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBlogLikeDto } from './dto/create-blog-like.dto';
-import { UpdateBlogLikeDto } from './dto/update-blog-like.dto';
+import { BlogLikeRepository } from './blog-like.repository';
+import { BlogLikeEntity } from './blog-like.entity';
 
 @Injectable()
 export class BlogLikeService {
-  create(createBlogLikeDto: CreateBlogLikeDto) {
-    return 'This action adds a new blogLike';
+  constructor(
+    private readonly blogLikeRepository: BlogLikeRepository
+  ) {}
+  public async create(postId: string, userId: string): Promise<BlogLikeEntity> {
+    const newLike = new BlogLikeEntity({postId, userId})
+    await this.blogLikeRepository.save(newLike);
+    return newLike;
   }
 
-  findAll() {
-    return `This action returns all blogLike`;
+  public async findByPostId(postId: string) {
+    return await this.blogLikeRepository.findByPostId(postId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blogLike`;
+  public async findById(id: string) {
+    return await this.blogLikeRepository.findById(id);
   }
 
-  update(id: number, updateBlogLikeDto: UpdateBlogLikeDto) {
-    return `This action updates a #${id} blogLike`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} blogLike`;
+  public async remove(id: string) {
+    return await this.blogLikeRepository.deleteById(id);
   }
 }

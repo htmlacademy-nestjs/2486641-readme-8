@@ -2,44 +2,34 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { BlogLikeService } from './blog-like.service';
-import { CreateBlogLikeDto } from './dto/create-blog-like.dto';
-import { UpdateBlogLikeDto } from './dto/update-blog-like.dto';
 
-@Controller('blog-like')
+const MOCK_USER_ID = '658170cbb954e9f5b905ccf4'; // TODO: Далее будет получаться из JWT
+
+@Controller('posts/:postId/likes')
 export class BlogLikeController {
-  constructor(private readonly blogLikeService: BlogLikeService) {}
+  constructor(private readonly blogLikeService: BlogLikeService) { }
 
-  @Post()
-  create(@Body() createBlogLikeDto: CreateBlogLikeDto) {
-    return this.blogLikeService.create(createBlogLikeDto);
+  @Post('/')
+  create(@Param('postId') postId: string) {
+    return this.blogLikeService.create(postId, MOCK_USER_ID);
   }
 
-  @Get()
-  findAll() {
-    return this.blogLikeService.findAll();
+  @Get('/')
+  findAll(@Param('postId') postId: string) {
+    return this.blogLikeService.findByPostId(postId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.blogLikeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBlogLikeDto: UpdateBlogLikeDto
-  ) {
-    return this.blogLikeService.update(+id, updateBlogLikeDto);
+    return this.blogLikeService.findById(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.blogLikeService.remove(+id);
+    return this.blogLikeService.remove(id);
   }
 }
