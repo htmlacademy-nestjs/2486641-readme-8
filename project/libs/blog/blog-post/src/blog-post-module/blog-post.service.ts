@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBlogPostModuleDto } from './dto/create-blog-post.dto';
-import { UpdateBlogPostModuleDto } from './dto/update-blog-post.dto';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { BlogPostRepository } from './blog-post.repository';
+import { BlogPostEntity } from './blog-post.entity';
 
 @Injectable()
-export class BlogPostModuleService {
-  create(createBlogPostModuleDto: CreateBlogPostModuleDto) {
-    return 'This action adds a new blogPostModule';
+export class BlogPostService {
+    constructor(
+      private readonly blogPostRepository: BlogPostRepository
+    ) { }
+  
+  public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
+    const newPost = new BlogPostEntity(dto)
+    await this.blogPostRepository.save(newPost);
+    return newPost;
   }
 
-  findAll() {
-    return `This action returns all blogPostModule`;
+  public async findAll() {
+    return await this.blogPostRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blogPostModule`;
+  public async findById(id: string): Promise<BlogPostEntity> {
+    return await this.blogPostRepository.findById(id);
   }
 
-  update(id: number, updateBlogPostModuleDto: UpdateBlogPostModuleDto) {
+  public async update(id: string, dto: UpdatePostDto) {
     return `This action updates a #${id} blogPostModule`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blogPostModule`;
+  public async remove(id: string): Promise<void> {
+    return await this.blogPostRepository.deleteById(id);
   }
 }

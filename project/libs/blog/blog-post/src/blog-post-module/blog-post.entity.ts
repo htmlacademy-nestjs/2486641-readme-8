@@ -51,7 +51,6 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
     this.author = post.author;
     this.title = post.title;
     this.preview = post.preview;
-
     const blogCommentFactory = new BlogCommentFactory();
     for (const comment of post.comments) {
       const blogCommentEntity = blogCommentFactory.create(comment);

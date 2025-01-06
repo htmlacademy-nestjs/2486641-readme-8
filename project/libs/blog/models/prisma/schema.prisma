@@ -28,7 +28,7 @@ model Post {
   tags           String[]
   userId         String   @map("user_id")
   originalUserId String?  @map("original_user_id")
-  postDate       DateTime @map("post_date")
+  postDate       DateTime? @map("post_date")
   isPublished    Boolean  @map("is_published")
   isReposted     Boolean  @map("is_reposted")
   originalId     String?  @map("original_id")

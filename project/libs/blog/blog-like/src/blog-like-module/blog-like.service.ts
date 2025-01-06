@@ -13,15 +13,15 @@ export class BlogLikeService {
     return newLike;
   }
 
-  public async findByPostId(postId: string) {
+  public async findByPostId(postId: string): Promise<BlogLikeEntity[]> {
     return await this.blogLikeRepository.findByPostId(postId);
   }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<BlogLikeEntity> {
     return await this.blogLikeRepository.findById(id);
   }
 
-  public async remove(id: string) {
+  public async remove(id: string): Promise<void> {
     return await this.blogLikeRepository.deleteById(id);
   }
 }

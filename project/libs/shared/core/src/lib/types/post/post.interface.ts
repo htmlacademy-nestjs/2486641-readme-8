@@ -20,6 +20,6 @@ export interface Post {
   preview?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  comments: Comment[];
-  likes: Like[];
+  comments?: Comment[];
+  likes?: Like[];
 }

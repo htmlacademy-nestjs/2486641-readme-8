@@ -14,18 +14,22 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     super(entityFactory, client);
   }
 
-  // public async save(entity: BlogPostEntity): Promise<void> {
-  //   const data = entity.toPOJO();
-  //   const record = await this.client.post.create({
-  //     data: {...data,
-  //       original: {
-  //         connect: data.originalId
-  //       }
-  //     }
-  //   });
+  public async save(entity: BlogPostEntity): Promise<void> {
+    const data = entity.toPOJO();
+    const record = await this.client.post.create({
+      data: {
+        ...data,
+        comments: {
+          connect: [],
+        },
+        likes: {
+          connect: [],
+        }
+      }
+    });
 
-  //   entity.id = record.id;
-  // }
+    entity.id = record.id;
+  }
 
   public async deleteById(id: string): Promise<void> {
     await this.client.post.delete({ where: { id } });
@@ -42,5 +46,10 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     }
 
     return this.createEntityFromDocument(document);
+  }
+
+  public async findAll(): Promise<BlogPostEntity[]> {
+    const documents = await this.client.post.findMany({ include: { comments: true, likes: true } });
+    return documents.map((document) => this.createEntityFromDocument(document));
   }
 }

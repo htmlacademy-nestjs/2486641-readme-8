@@ -1,1 +1,1 @@
-export { BlogPostModuleModule } from './blog-post-module/blog-post.module';
+export { BlogPostModule } from './blog-post-module/blog-post.module';

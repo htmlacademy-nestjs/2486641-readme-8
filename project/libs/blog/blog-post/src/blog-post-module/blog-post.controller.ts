@@ -7,39 +7,39 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { BlogPostModuleService } from './blog-post.service';
-import { CreateBlogPostModuleDto } from './dto/create-blog-post.dto';
-import { UpdateBlogPostModuleDto } from './dto/update-blog-post.dto';
+import { BlogPostService } from './blog-post.service';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
-@Controller('blog-post-module')
+@Controller('posts')
 export class BlogPostModuleController {
-  constructor(private readonly blogPostModuleService: BlogPostModuleService) {}
+  constructor(private readonly blogPostService: BlogPostService) {}
 
-  @Post()
-  create(@Body() createBlogPostModuleDto: CreateBlogPostModuleDto) {
-    return this.blogPostModuleService.create(createBlogPostModuleDto);
+  @Post('/')
+  create(@Body() dto: CreatePostDto) {
+    return this.blogPostService.create(dto);
   }
 
-  @Get()
+  @Get('/')
   findAll() {
-    return this.blogPostModuleService.findAll();
+    return this.blogPostService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.blogPostModuleService.findOne(+id);
+    return this.blogPostService.findById(id);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateBlogPostModuleDto: UpdateBlogPostModuleDto
+    @Body() dto: UpdatePostDto
   ) {
-    return this.blogPostModuleService.update(+id, updateBlogPostModuleDto);
+    return this.blogPostService.update(id, dto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.blogPostModuleService.remove(+id);
+    return this.blogPostService.remove(id);
   }
 }
