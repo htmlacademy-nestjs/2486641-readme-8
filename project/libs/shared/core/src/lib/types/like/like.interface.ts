@@ -1,9 +1,7 @@
-import { Post } from "../post/post";
-import { User } from "../user/user.interface";
-
 export interface Like {
-  id: string,
-  user: User,
-  post: Post,
-  createDate: Date
+  id?: string,
+  userId: string,
+  postId: string,
+  createdAt?: Date,
+  updatedAt?: Date
 }
