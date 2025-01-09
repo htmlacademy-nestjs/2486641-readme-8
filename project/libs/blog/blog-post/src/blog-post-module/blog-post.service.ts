@@ -16,7 +16,7 @@ export class BlogPostService {
     return newPost;
   }
 
-  public async findAll() {
+  public async findAll(): Promise<BlogPostEntity[]> {
     return await this.blogPostRepository.findAll();
   }
 

@@ -16,22 +16,22 @@ export class BlogPostModuleController {
   constructor(private readonly blogPostService: BlogPostService) {}
 
   @Post('/')
-  create(@Body() dto: CreatePostDto) {
+  public async create(@Body() dto: CreatePostDto) {
     return this.blogPostService.create(dto);
   }
 
   @Get('/')
-  findAll() {
+  public async findAll() {
     return this.blogPostService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string) {
     return this.blogPostService.findById(id);
   }
 
   @Patch(':id')
-  update(
+  public async update(
     @Param('id') id: string,
     @Body() dto: UpdatePostDto
   ) {
@@ -39,7 +39,7 @@ export class BlogPostModuleController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string) {
     return this.blogPostService.remove(id);
   }
 }
