@@ -1,25 +1,33 @@
 import { Comment } from "../comment/comment.interface";
 import { Like } from "../like/like.interface";
-import { AppPostType } from "./const"
+import { PostType } from "./const"
 
 export interface Post {
   id?: string;
-  type: AppPostType;
+  type: PostType;
   tags?: string[];
   originalUserId?: string;
   userId: string;
   postDate?: Date;
   isPublished: boolean;
-  isReposted: boolean;
   originalId?: string;
-  url?: string;
-  description?: string;
-  text?: string;
-  author?: string;
-  title?: string;
-  preview?: string;
   createdAt?: Date;
   updatedAt?: Date;
   comments?: Comment[];
   likes?: Like[];
+  // video  
+  titleVideo?: string;
+  urlVideo?: string;
+  // text
+  titleText?: string;
+  previewText?: string;
+  text?: string;
+  // quote
+  textQuote?: string;
+  authorQuote?: string;
+  // photo
+  urlPhoto?: string;
+  // link
+  urlLink?: string;
+  descriptionLink?: string;
 }

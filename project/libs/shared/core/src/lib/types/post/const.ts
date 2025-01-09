@@ -6,7 +6,7 @@
 //   link = 'link'
 // }
 
-export const PostTypes = {
+export const PostType = {
   video: 'video',
   text: 'text',
   quote: 'quote',
@@ -14,7 +14,7 @@ export const PostTypes = {
   link: 'link'
 } as const;
 
-export type AppPostType = typeof PostTypes[keyof typeof PostTypes];
+export type PostType = typeof PostType[keyof typeof PostType];
 
 /*
 const UserRoles = {

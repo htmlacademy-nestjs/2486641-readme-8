@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/data-access';
 import { BlogPostEntity } from './blog-post.entity';
-import { Post } from '@project/core';
+import { Post, PostType } from '@project/core';
 import { BlogPostFactory } from './blog-post.factory';
 import { PrismaClientService } from '@project/models';
 
@@ -45,11 +45,11 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
       throw new NotFoundException(`Post with id = ${id} not found.`);
     }
 
-    return this.createEntityFromDocument(document);
+    return this.createEntityFromDocument({...document, type: document.type as PostType});
   }
 
   public async findAll(): Promise<BlogPostEntity[]> {
     const documents = await this.client.post.findMany({ include: { comments: true, likes: true } });
-    return documents.map((document) => this.createEntityFromDocument(document));
+    return documents.map((document) => this.createEntityFromDocument({...document, type: document.type as PostType}));
   }
 }
