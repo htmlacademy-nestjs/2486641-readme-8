@@ -19,7 +19,7 @@ export class BlogPostQuery {
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
-  public tag?: string[];
+  public tags?: string[];
 
   @IsIn(Object.values(SortDirection))
   @IsOptional()

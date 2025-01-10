@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BasePostgresRepository } from '@project/data-access';
 import { BlogPostEntity } from './blog-post.entity';
-import { Post, PostType } from '@project/core';
+import { PaginationResult, Post, PostType } from '@project/core';
 import { BlogPostFactory } from './blog-post.factory';
 import { PrismaClientService } from '@project/models';
 import { BlogPostQuery } from './blog-post.query';
@@ -14,6 +14,14 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     readonly client: PrismaClientService
   ) {
     super(entityFactory, client);
+  }
+
+  private async getPostCount(where: Prisma.PostWhereInput): Promise<number> {
+    return this.client.post.count({ where });
+  }
+
+  private calculatePostsPage(totalCount: number, limit: number): number {
+    return Math.ceil(totalCount / limit);
   }
 
   public async save(entity: BlogPostEntity): Promise<void> {
@@ -50,12 +58,34 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     return this.createEntityFromDocument({...document, type: document.type as PostType});
   }
 
-  public async findAll(query?: BlogPostQuery): Promise<BlogPostEntity[]> {
+  public async findAll(query?: BlogPostQuery): Promise<PaginationResult<BlogPostEntity>> {
     const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
     const where: Prisma.PostWhereInput = {};
     const orderBy: Prisma.PostOrderByWithRelationInput = {};
-    const documents = await this.client.post.findMany({ include: { comments: true, likes: true } });
-    return documents.map((document) => this.createEntityFromDocument({...document, type: document.type as PostType}));
+    if (query?.tags) {
+      where.tags = {
+        hasSome: query.tags
+      }
+    }
+
+    if (query?.sortDirection) {
+      orderBy.createdAt = query.sortDirection;
+    }
+
+    const [documents, postCount] = await Promise.all([
+      this.client.post.findMany({ where, orderBy, skip, take,
+        include: { comments: true, likes: true },
+      }),
+      this.getPostCount(where),
+    ]);
+
+    return {
+      entities: documents.map((document) => this.createEntityFromDocument({...document, type: document.type as PostType})),
+      currentPage: query?.page,
+      totalPages: this.calculatePostsPage(postCount, take),
+      itemsPerPage: take,
+      totalItems: postCount,
+    }
   }
 }
