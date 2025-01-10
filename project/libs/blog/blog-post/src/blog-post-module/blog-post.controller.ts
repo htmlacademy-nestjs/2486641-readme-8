@@ -6,32 +6,34 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BlogPostService } from './blog-post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { BlogPostQuery } from './blog-post.query';
 
 @Controller('posts')
-export class BlogPostModuleController {
+export class BlogPostController {
   constructor(private readonly blogPostService: BlogPostService) {}
 
   @Post('/')
-  create(@Body() dto: CreatePostDto) {
+  public async create(@Body() dto: CreatePostDto) {
     return this.blogPostService.create(dto);
   }
 
   @Get('/')
-  findAll() {
-    return this.blogPostService.findAll();
+  public async findAll(@Query() query: BlogPostQuery) {
+    return this.blogPostService.findAll(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string) {
     return this.blogPostService.findById(id);
   }
 
   @Patch(':id')
-  update(
+  public async update(
     @Param('id') id: string,
     @Body() dto: UpdatePostDto
   ) {
@@ -39,7 +41,7 @@ export class BlogPostModuleController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string) {
     return this.blogPostService.remove(id);
   }
 }

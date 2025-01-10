@@ -14,39 +14,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum PostType {
-  video
-  text
-  quote
-  photo
-  link
-}
-
 model Post {
-  id             String   @id @default(uuid())
-  type           PostType
-  tags           String[]
-  userId         String   @map("user_id")
-  originalUserId String?  @map("original_user_id")
-  postDate       DateTime? @map("post_date")
-  isPublished    Boolean  @map("is_published")
-  isReposted     Boolean  @map("is_reposted")
-  originalId     String?  @map("original_id")
-  title          String?
-  preview        String?
-  url            String?
-  description    String?
-  text           String?
-  author         String?
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id              String    @id @default(uuid())
+  type            String
+  tags            String[]
+  userId          String    @map("user_id")
+  originalUserId  String?   @map("original_user_id")
+  postDate        DateTime? @map("post_date")
+  isPublished     Boolean   @map("is_published")
+  originalId      String?   @map("original_id")
+  // video  
+  titleVideo      String?   @map("title_video")
+  urlVideo        String?   @map("url_video")
+  // text
+  titleText       String?   @map("title_text")
+  previewText     String?   @map("preview_text")
+  text            String?
+  // quote
+  textQuote       String?   @map("text_quote")
+  authorQuote     String?   @map("author_quote")
+  // photo
+  urlPhoto        String?   @map("url_photo")
+  // link
+  urlLink         String?   @map("url_link")
+  descriptionLink String?   @map("description_link")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   comments       Comment[]
   likes          Like[]
   original       Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
   inheritedPosts Post[]    @relation(name: "post_original_fk")
 
-  @@index([title])
+  @@index([userId])
+  @@index([postDate])
   @@map("posts")
 }
 

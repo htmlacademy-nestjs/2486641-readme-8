@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { BlogCommentService } from './blog-comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { fillDto } from '@project/helpers';
+import { CommentRdo } from './rdo/comment.rdo';
 
 const MOCK_USER_ID = '658170cbb954e9f5b905ccf4'; // TODO: Далее будет получаться из JWT
 
@@ -16,25 +18,28 @@ export class BlogCommentController {
   constructor(private readonly blogCommentService: BlogCommentService) { }
 
   @Post()
-  create(
+  public async create(
     @Param('postId') postId: string,
     @Body() dto: CreateCommentDto
   ) {
-    return this.blogCommentService.create(postId, MOCK_USER_ID, dto);
+    const comment = await this.blogCommentService.create(postId, MOCK_USER_ID, dto);
+    return fillDto(CommentRdo, comment.toPOJO());
   }
 
   @Get()
-  findAll(@Param('postId') postId: string) {
-    return this.blogCommentService.findByPostId(postId);
+  public async findAll(@Param('postId') postId: string) {
+    const comments = await this.blogCommentService.findByPostId(postId);
+    return fillDto(CommentRdo, comments.map((comment) => comment.toPOJO()));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blogCommentService.findById(id);
+  public async findOne(@Param('id') id: string) {
+    const comment = await this.blogCommentService.findById(id);
+    return fillDto(CommentRdo, comment.toPOJO());
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blogCommentService.remove(id);
+  public async remove(@Param('id') id: string) {
+    return await this.blogCommentService.remove(id);
   }
 }

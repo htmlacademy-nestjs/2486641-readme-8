@@ -3,6 +3,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
+import { BlogPostQuery } from './blog-post.query';
+import { PaginationResult } from '@project/core';
 
 @Injectable()
 export class BlogPostService {
@@ -16,8 +18,8 @@ export class BlogPostService {
     return newPost;
   }
 
-  public async findAll() {
-    return await this.blogPostRepository.findAll();
+  public async findAll(query: BlogPostQuery): Promise<PaginationResult<BlogPostEntity>> {
+    return await this.blogPostRepository.findAll(query);
   }
 
   public async findById(id: string): Promise<BlogPostEntity> {

@@ -14,15 +14,15 @@ export class BlogCommentService {
     return newComment;
   }
 
-  public async findByPostId(postId: string) {
+  public async findByPostId(postId: string): Promise<BlogCommentEntity[]> {
     return await this.blogCommentRepository.findByPostId(postId);
   }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<BlogCommentEntity> {
     return await this.blogCommentRepository.findById(id);
   }
 
-  public async remove(id: string) {
+  public async remove(id: string): Promise<void> {
     return await this.blogCommentRepository.deleteById(id);
   }
 }

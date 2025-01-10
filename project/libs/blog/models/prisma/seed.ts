@@ -1,4 +1,4 @@
-import { PostType, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const FIRST_COMMENT_UUID = '39614113-7ad5-45b6-8093-06455437e1e2';
 const SECOND_COMMENT_UUID = 'efd775e2-df55-4e0e-a308-58249f5ea202';
@@ -16,31 +16,28 @@ function getPosts() {
   return [
     {
       id: FIRST_POST_UUID,
-      type: PostType.text,
+      type: 'text',
       tags: ['tag1', 'tag2'],
       userId: FIRST_USER_ID,
       originalUserId: null,
       postDate: new Date(),
       isPublished: true,
-      isReposted: false,
       originalId: null,
-      title: 'Post in Blog with text content',
-      preview: 'Bla-bla-bla',
+      titleText: 'Post in Blog with text content',
+      previewText: 'Bla-bla-bla',
       text: 'Full bla-bla-bla',
     },
     {
         id: SECOND_POST_UUID,
-        type: PostType.quote,
+        type: 'quote',
         tags: ['tag1', 'tagQuote'],
         userId: SECOND_USER_ID,
         originalUserId: FIRST_USER_ID,
         postDate: new Date(),
         isPublished: true,
-        isReposted: false,
         originalId: FIRST_POST_UUID,
-        title: 'Post in Blog with text content',
-        preview: 'Bla-bla-bla',
-        text: 'Full bla-bla-bla',
+        textQuote: 'Full bla-bla-bla',
+        authorQuote: 'Pushkin'
       },
   ]
 }

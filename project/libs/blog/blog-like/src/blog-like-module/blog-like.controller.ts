@@ -14,22 +14,22 @@ export class BlogLikeController {
   constructor(private readonly blogLikeService: BlogLikeService) { }
 
   @Post('/')
-  create(@Param('postId') postId: string) {
-    return this.blogLikeService.create(postId, MOCK_USER_ID);
+  public async create(@Param('postId') postId: string) {
+    return await this.blogLikeService.create(postId, MOCK_USER_ID);
   }
 
   @Get('/')
-  findAll(@Param('postId') postId: string) {
-    return this.blogLikeService.findByPostId(postId);
+  public async findAll(@Param('postId') postId: string) {
+    return await this.blogLikeService.findByPostId(postId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.blogLikeService.findById(id);
+  public async findOne(@Param('id') id: string) {
+    return await this.blogLikeService.findById(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.blogLikeService.remove(id);
+  public async remove(@Param('id') id: string) {
+    return await this.blogLikeService.remove(id);
   }
 }
