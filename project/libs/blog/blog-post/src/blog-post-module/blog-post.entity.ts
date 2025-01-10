@@ -10,6 +10,7 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   public userId: string;
   public postDate: Date;
   public isPublished: boolean;
+  public isReposted: boolean;
   public originalId: string;
   // video  
   public titleVideo?: string;
@@ -31,7 +32,9 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   public updatedAt: Date;
   // вложенные сущности
   public comments: BlogCommentEntity[];
+  public commentsCount: number;
   public likes: BlogLikeEntity[];
+  public likesCount: number;
 
   constructor(post?: Post) {
     super();
@@ -50,6 +53,7 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
     this.postDate = post.postDate ?? undefined;
     this.isPublished = post.isPublished;
     this.originalId = post.originalId ?? undefined;
+    this.isReposted = (!!post.originalId);
     this.createdAt = post.createdAt ?? undefined;
     this.updatedAt = post.updatedAt ?? undefined;
     this.likes = [];
@@ -76,12 +80,14 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
       const blogCommentEntity = blogCommentFactory.create(comment);
       this.comments.push(blogCommentEntity);
     }
+    this.commentsCount = this.comments.length;
 
     const blogLikeFactory = new BlogLikeFactory();
     for (const like of post.likes) {
       const blogLikeEntity = blogLikeFactory.create(like);
       this.likes.push(blogLikeEntity);
     }
+    this.likesCount = this.likes.length;
   }
 
   toPOJO(): Post {
