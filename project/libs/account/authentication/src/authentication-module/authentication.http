@@ -25,3 +25,6 @@ Content-Type: application/json
 }
 
 ###
+
+GET http://localhost:3000/api/auth/demo/123 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNjUwMjk3NywiZXhwIjoxNzM2NTAzMjc3fQ.TA018T6GVmHKesr-V-Fk_-nb-WTPX4l-cnU7grluqZE
