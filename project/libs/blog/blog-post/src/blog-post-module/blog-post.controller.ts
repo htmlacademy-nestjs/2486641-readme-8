@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BlogPostService } from './blog-post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { BlogPostQuery } from './blog-post.query';
 
 @Controller('posts')
 export class BlogPostController {
@@ -21,8 +23,8 @@ export class BlogPostController {
   }
 
   @Get('/')
-  public async findAll() {
-    return this.blogPostService.findAll();
+  public async findAll(@Query() query: BlogPostQuery) {
+    return this.blogPostService.findAll(query);
   }
 
   @Get(':id')

@@ -3,6 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
+import { BlogPostQuery } from './blog-post.query';
 
 @Injectable()
 export class BlogPostService {
@@ -16,8 +17,8 @@ export class BlogPostService {
     return newPost;
   }
 
-  public async findAll(): Promise<BlogPostEntity[]> {
-    return await this.blogPostRepository.findAll();
+  public async findAll(query: BlogPostQuery): Promise<BlogPostEntity[]> {
+    return await this.blogPostRepository.findAll(query);
   }
 
   public async findById(id: string): Promise<BlogPostEntity> {
