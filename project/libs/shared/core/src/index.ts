@@ -10,3 +10,5 @@ export { Comment } from './lib/types/comment/comment.interface';
 export { Like } from './lib/types/like/like.interface';
 export { SortDirection } from './lib/interfaces/sort-direction.interface';
 export { PaginationResult } from './lib/interfaces/pagination.interface';
+export { Token } from './lib/interfaces/token.interface';
+export { TokenPayload } from './lib/interfaces/token-payload.interface';
