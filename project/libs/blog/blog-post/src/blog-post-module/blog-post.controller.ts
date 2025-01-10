@@ -12,7 +12,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
-export class BlogPostModuleController {
+export class BlogPostController {
   constructor(private readonly blogPostService: BlogPostService) {}
 
   @Post('/')
