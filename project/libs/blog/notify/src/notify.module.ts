@@ -9,8 +9,21 @@ import { NotifyService } from './notify.service';
   imports: [
     RabbitMQModule.forRootAsync(
       RabbitMQModule,
-      getRabbitMQOptions('rabbit')
+      getRabbitMQOptions('rabbit-blog')
     )
+    // RabbitMQModule.forRoot(
+    //   RabbitMQModule, 
+    //   {
+    //     exchanges: [
+    //       {
+    //         name: 'readme.notify',
+    //         type: 'direct',
+    //       },
+    //     ],
+    //     uri: 'amqp://admin:test@localhost:5672',
+    //     connectionInitOptions: { wait: false },
+    //   }
+    // ),
   ],
   providers: [NotifyService],
   exports: [NotifyService]

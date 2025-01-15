@@ -26,4 +26,13 @@ export class MailService {
       }
     })
   }
+
+  public async test() {
+    await this.mailerService.sendMail({
+      from: this.notifyConfig.mail.from,
+      to: 'qwer@mail.com',
+      subject: 'Subject',
+      html: '<h2>Information about new posts</h2>',
+    })
+  }
 }

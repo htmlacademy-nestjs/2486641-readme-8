@@ -12,10 +12,14 @@ import { BlogPostService } from './blog-post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostQuery } from './blog-post.query';
+import { NotifyService } from '@project/blog-notify';
 
 @Controller('posts')
 export class BlogPostController {
-  constructor(private readonly blogPostService: BlogPostService) {}
+  constructor(
+    private readonly blogPostService: BlogPostService,
+    private readonly notifyService: NotifyService
+  ) {}
 
   @Post('/')
   public async create(@Body() dto: CreatePostDto) {
@@ -25,6 +29,11 @@ export class BlogPostController {
   @Get('/')
   public async findAll(@Query() query: BlogPostQuery) {
     return this.blogPostService.findAll(query);
+  }
+
+  @Get('/send')
+  public async send() {
+    return this.notifyService.sendNewPosts();
   }
 
   @Get(':id')

@@ -3,7 +3,7 @@ import { BlogLikeModule } from '@project/blog-like';
 import { BlogCommentModule } from '@project/blog-comment';
 import { BlogPostModule } from '@project/blog-post';
 import { NotifyModule } from '@project/blog-notify';
-import { AccountConfigModule } from '@project/config';
+import { BlogConfigModule } from '@project/blog-config';
 
 @Module({
   imports: [
@@ -11,7 +11,7 @@ import { AccountConfigModule } from '@project/config';
     BlogCommentModule, 
     BlogPostModule, 
     NotifyModule,
-    AccountConfigModule
+    BlogConfigModule
   ],
   controllers: [],
   providers: [],

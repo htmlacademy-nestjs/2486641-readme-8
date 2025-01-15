@@ -3,7 +3,7 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { ConfigType } from '@nestjs/config';
 
 import { RabbitRouting } from '@project/core';
-import { rabbitConfig } from '@project/config';
+import { rabbitConfig } from '@project/blog-config';
 
 @Injectable()
 export class NotifyService {
@@ -14,9 +14,10 @@ export class NotifyService {
   ) {}
 
   public async sendNewPosts() {
+    console.dir(this.rabbiOptions);
     return this.rabbitClient.publish(
       this.rabbiOptions.exchange,
-      RabbitRouting.AddSubscriber,
+      RabbitRouting.SendNewPosts,
       { info: 'Information about new posts' }
     );
   }
