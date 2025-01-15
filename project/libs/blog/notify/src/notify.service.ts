@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { ConfigType } from '@nestjs/config';
 
-import { RabbitRouting } from '@project/core';
+import { Post, RabbitRouting } from '@project/core';
 import { rabbitConfig } from '@project/blog-config';
 
 @Injectable()
@@ -13,12 +13,12 @@ export class NotifyService {
     private readonly rabbiOptions: ConfigType<typeof rabbitConfig>,
   ) {}
 
-  public async sendNewPosts(dto) {
+  public async sendNewPosts(posts: Post[]) {
     //console.dir(this.rabbiOptions);
     return this.rabbitClient.publish(
       this.rabbiOptions.exchange,
       RabbitRouting.SendNewPosts,
-      dto
+      posts
     );
   }
 }

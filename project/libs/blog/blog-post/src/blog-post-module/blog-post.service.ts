@@ -37,7 +37,8 @@ export class BlogPostService {
   }
 
   public async sendPosts() {
-    const posts = await this.blogPostRepository.findAndUpdateForSend();
+    const documents = await this.blogPostRepository.findAndUpdateForSend();
+    const posts = documents.map((item) => new BlogPostEntity(item).toPOJO());
     return this.notifyService.sendNewPosts(posts)
   }
 }

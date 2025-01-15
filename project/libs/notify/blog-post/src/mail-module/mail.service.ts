@@ -5,6 +5,7 @@ import { ConfigType } from '@nestjs/config';
 import { NotifyConfig } from '@project/notify-config';
 
 import { EMAIL_NEW_POSTS_SUBJECT } from './mail.constant';
+import { Post } from '@project/core';
 
 @Injectable()
 export class MailService {
@@ -13,9 +14,9 @@ export class MailService {
   @Inject(NotifyConfig.KEY)
   private readonly notifyConfig: ConfigType<typeof NotifyConfig>
 
-  public async test(dto) {
+  public async test(posts: Post[]) {
     //console.dir(dto);
-    const text = dto.map((item) => item._id).join();
+    const text = posts.map((item) => item.id).join();
     await this.mailerService.sendMail({
       from: this.notifyConfig.mail.from,
       to: 'qwer@mail.com',
