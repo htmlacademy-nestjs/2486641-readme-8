@@ -24,14 +24,4 @@ export class EmailSubscriberController {
     this.subscriberService.addSubscriber(subscriber);
     this.mailService.sendNotifyNewSubscriber(subscriber);
   }
-
-  @RabbitSubscribe({
-    exchange: 'readme.notify',
-    routingKey: RabbitRouting.SendNewPosts,
-    queue: 'readme.notify.posts',
-  })
-  public async test(dto) {
-    //this.subscriberService.addSubscriber(subscriber);
-    this.mailService.test(dto);
-  }
 }
