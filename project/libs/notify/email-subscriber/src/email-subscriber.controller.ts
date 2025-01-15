@@ -30,8 +30,8 @@ export class EmailSubscriberController {
     routingKey: RabbitRouting.SendNewPosts,
     queue: 'readme.notify.posts',
   })
-  public async test() {
+  public async test(dto) {
     //this.subscriberService.addSubscriber(subscriber);
-    this.mailService.test();
+    this.mailService.test(dto);
   }
 }

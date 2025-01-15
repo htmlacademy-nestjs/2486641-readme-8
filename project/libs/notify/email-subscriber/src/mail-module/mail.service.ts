@@ -27,12 +27,15 @@ export class MailService {
     })
   }
 
-  public async test() {
+  public async test(dto) {
+    //console.dir(dto);
+    const text = dto.map((item) => item._id).join();
     await this.mailerService.sendMail({
       from: this.notifyConfig.mail.from,
       to: 'qwer@mail.com',
       subject: 'Subject',
       html: '<h2>Information about new posts</h2>',
+      text: text
     })
   }
 }

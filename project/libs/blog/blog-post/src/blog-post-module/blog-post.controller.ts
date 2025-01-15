@@ -12,13 +12,11 @@ import { BlogPostService } from './blog-post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostQuery } from './blog-post.query';
-import { NotifyService } from '@project/blog-notify';
 
 @Controller('posts')
 export class BlogPostController {
   constructor(
     private readonly blogPostService: BlogPostService,
-    private readonly notifyService: NotifyService
   ) {}
 
   @Post('/')
@@ -33,7 +31,7 @@ export class BlogPostController {
 
   @Get('/send')
   public async send() {
-    return this.notifyService.sendNewPosts();
+    return this.blogPostService.sendPosts();
   }
 
   @Get(':id')

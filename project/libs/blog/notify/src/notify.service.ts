@@ -13,12 +13,12 @@ export class NotifyService {
     private readonly rabbiOptions: ConfigType<typeof rabbitConfig>,
   ) {}
 
-  public async sendNewPosts() {
-    console.dir(this.rabbiOptions);
+  public async sendNewPosts(dto) {
+    //console.dir(this.rabbiOptions);
     return this.rabbitClient.publish(
       this.rabbiOptions.exchange,
       RabbitRouting.SendNewPosts,
-      { info: 'Information about new posts' }
+      dto
     );
   }
 }

@@ -5,13 +5,15 @@ import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostQuery } from './blog-post.query';
 import { PaginationResult } from '@project/core';
+import { NotifyService } from '@project/blog-notify';
 
 @Injectable()
 export class BlogPostService {
-    constructor(
-      private readonly blogPostRepository: BlogPostRepository
-    ) { }
-  
+  constructor(
+    private readonly blogPostRepository: BlogPostRepository,
+    private readonly notifyService: NotifyService
+  ) { }
+
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
     const newPost = new BlogPostEntity(dto)
     await this.blogPostRepository.save(newPost);
@@ -32,5 +34,10 @@ export class BlogPostService {
 
   public async remove(id: string): Promise<void> {
     return await this.blogPostRepository.deleteById(id);
+  }
+
+  public async sendPosts() {
+    const posts = await this.blogPostRepository.findAndUpdateForSend();
+    return this.notifyService.sendNewPosts(posts)
   }
 }

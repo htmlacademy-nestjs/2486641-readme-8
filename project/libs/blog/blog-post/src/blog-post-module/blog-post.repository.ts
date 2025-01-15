@@ -88,4 +88,10 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
       totalItems: postCount,
     }
   }
+
+  public async findAndUpdateForSend(): Promise<Post[]> {
+    const documents = await this.client.post.findMany({include: {comments: true, likes: true}});
+    //await this.client.post.updateMany()
+    return documents.map((document) => this.createEntityFromDocument({...document, type: document.type as PostType}));
+  }
 }
