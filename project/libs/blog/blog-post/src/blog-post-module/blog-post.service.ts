@@ -17,6 +17,7 @@ export class BlogPostService {
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
     const newPost = new BlogPostEntity(dto)
     await this.blogPostRepository.save(newPost);
+    //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
     return newPost;
   }
 
@@ -39,6 +40,6 @@ export class BlogPostService {
   public async sendPosts() {
     const documents = await this.blogPostRepository.findAndUpdateForSend();
     const posts = documents.map((item) => new BlogPostEntity(item).toPOJO());
-    return this.notifyService.sendNewPosts(posts)
+    return this.notifyService.sendPosts(posts)
   }
 }

@@ -5,6 +5,7 @@ import { EmailSubscriberService } from './email-subscriber.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { RabbitRouting } from '@project/core';
 import { MailService } from './mail-module/mail.service';
+import { CreatePostMailDto } from './dto/create-post-mail.dto';
 
 
 
@@ -24,4 +25,14 @@ export class EmailSubscriberController {
     this.subscriberService.addSubscriber(subscriber);
     this.mailService.sendNotifyNewSubscriber(subscriber);
   }
-}
+
+  @RabbitSubscribe({
+    exchange: 'readme.notify',
+    routingKey: RabbitRouting.SendNewPosts,
+    queue: 'readme.notify.posts',
+  })
+  public async test(dto: CreatePostMailDto[]) {
+    //this.subscriberService.addSubscriber(subscriber);
+    this.mailService.test(dto);
+  }
+} 
