@@ -9,11 +9,12 @@ import { UserRdo } from '../rdo/user.rdo';
 import { MongoIdValidationPipe } from '@project/pipes';
 import { fillDto } from '@project/helpers';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
-    private readonly authService: AuthenticationService
+    private readonly authService: AuthenticationService,
   ) {}
 
   @ApiResponse({

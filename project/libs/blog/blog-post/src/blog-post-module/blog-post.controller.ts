@@ -15,7 +15,9 @@ import { BlogPostQuery } from './blog-post.query';
 
 @Controller('posts')
 export class BlogPostController {
-  constructor(private readonly blogPostService: BlogPostService) {}
+  constructor(
+    private readonly blogPostService: BlogPostService,
+  ) {}
 
   @Post('/')
   public async create(@Body() dto: CreatePostDto) {
@@ -25,6 +27,11 @@ export class BlogPostController {
   @Get('/')
   public async findAll(@Query() query: BlogPostQuery) {
     return this.blogPostService.findAll(query);
+  }
+
+  @Get('/send')
+  public async send() {
+    return this.blogPostService.sendPosts();
   }
 
   @Get(':id')

@@ -5,16 +5,19 @@ import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostQuery } from './blog-post.query';
 import { PaginationResult } from '@project/core';
+import { NotifyService } from '@project/blog-notify';
 
 @Injectable()
 export class BlogPostService {
-    constructor(
-      private readonly blogPostRepository: BlogPostRepository
-    ) { }
-  
+  constructor(
+    private readonly blogPostRepository: BlogPostRepository,
+    private readonly notifyService: NotifyService
+  ) { }
+
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
     const newPost = new BlogPostEntity(dto)
     await this.blogPostRepository.save(newPost);
+    //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
     return newPost;
   }
 
@@ -32,5 +35,14 @@ export class BlogPostService {
 
   public async remove(id: string): Promise<void> {
     return await this.blogPostRepository.deleteById(id);
+  }
+
+  public async sendPosts() {
+    const documents = await this.blogPostRepository.findAndUpdateForSend();
+    if (!documents.length) {
+      return;
+    }
+    const posts = documents.map((item) => new BlogPostEntity(item).toPOJO());
+    return this.notifyService.sendPosts(posts)
   }
 }

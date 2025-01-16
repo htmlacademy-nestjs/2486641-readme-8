@@ -5,6 +5,7 @@ import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from 
 import { LoginUserDto } from '../dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Token, TokenPayload, User } from '@project/core';
+import { NotifyService } from '@project/account-notify';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,10 +14,11 @@ export class AuthenticationService {
   constructor(
     private readonly blogUserRepository: BlogUserRepository,
     private readonly jwtService: JwtService,
-  ){ }
+    private readonly notifyService: NotifyService,
+  ) { }
 
   public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
-    const {email, name, password} = dto;
+    const { email, name, password } = dto;
 
     const blogUser = {
       email, name, avatar: '', passwordHash: ''
@@ -32,14 +34,16 @@ export class AuthenticationService {
     const userEntity = await new BlogUserEntity(blogUser)
       .setPassword(password)
 
-      this.blogUserRepository
+    this.blogUserRepository
       .save(userEntity);
+
+    await this.notifyService.registerSubscriber({ email, name });
 
     return userEntity;
   }
 
   public async verifyUser(dto: LoginUserDto) {
-    const {email, password} = dto;
+    const { email, password } = dto;
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (!existUser) {
@@ -56,7 +60,7 @@ export class AuthenticationService {
   public async getUser(id: string) {
     const user = await this.blogUserRepository.findById(id);
 
-    if (! user) {
+    if (!user) {
       throw new NotFoundException(AUTH_USER_NOT_FOUND);
     }
 
