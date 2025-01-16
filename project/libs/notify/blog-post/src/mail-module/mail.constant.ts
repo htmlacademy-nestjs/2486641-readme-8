@@ -1,1 +1,0 @@
-export const EMAIL_NEW_POSTS_SUBJECT = 'Новые публикации в блоге!';
