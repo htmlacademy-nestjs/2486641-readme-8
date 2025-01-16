@@ -39,6 +39,9 @@ export class BlogPostService {
 
   public async sendPosts() {
     const documents = await this.blogPostRepository.findAndUpdateForSend();
+    if (!documents.length) {
+      return;
+    }
     const posts = documents.map((item) => new BlogPostEntity(item).toPOJO());
     return this.notifyService.sendPosts(posts)
   }
