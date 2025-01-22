@@ -14,3 +14,16 @@ POST http://localhost:3000/api/users/refresh HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsInRva2VuSWQiOiI5ZmMzODUxYy1lNDMwLTQwZjQtODQxNi0xNDJkODhlZTYzZWYiLCJpYXQiOjE3Mzc1MzYzODEsImV4cCI6MTc0MDEyODM4MX0.h5qVjYKF_76SPRFhRULzOQ6E2_KXgkZd7AWVLWnQeH8
 
 ###
+
+# Create a new post
+POST http://localhost:4000/api/blog HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDQwMzJmYmU0Y2FlYjg2OGM2ZWVjMzYiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoidXNlciIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwiaWF0IjoxNjgzMTI0MTA5LCJleHAiOjE2ODMxMjQ3MDl9.oHiIvy7hGEuDaI7e7Jspbcd68_5CMKNe2qzkMV6bDe8
+Content-Type: application/json
+
+{
+  "title": "Проверка!!",
+  "description": "Текст анонса",
+  "content": "Расширенный текст публикации",
+  "categories": [""]
+}
+###
