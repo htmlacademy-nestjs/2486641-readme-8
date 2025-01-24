@@ -1,15 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { PostType } from "@project/core";
-import { ArrayMaxSize, IsArray, IsBoolean, IsDateString, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
+import { ArrayMaxSize, IsArray, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
 import { PostValidateMessage, PostValidateValue } from "../blog-post.constant";
 
 export class CreatePostDto {
-  @ApiProperty({ description: 'Тип контента' })
+  @ApiProperty({ description: 'Тип контента', example: PostType.text })
   @IsIn(Object.values(PostType))
   @IsNotEmpty()
   type: PostType;
 
-  @ApiProperty({ description: 'Список тэгов' })
+  @ApiProperty({ description: 'Список тэгов', example: ['Tag1, Tag2'] })
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
@@ -27,20 +27,20 @@ export class CreatePostDto {
   )
   tags?: string[];
 
-  @ApiProperty({ description: 'Идентификатор автора публикации' })
+  @ApiProperty({ description: 'Идентификатор автора публикации', example: '6766e16f90c0264a74a1f9d4' })
   @IsMongoId()
   userId: string;
 
-  @ApiProperty({ description: 'Дата публикации' })
-  @IsDateString()
-  @IsOptional()
-  postDate?: Date;
+  // @ApiProperty({ description: 'Дата публикации' })
+  // @IsDateString()
+  // @IsOptional()
+  // postDate?: Date;
 
-  @ApiProperty({ description: 'Признак "опубликована"' })
-  @IsBoolean({ message: PostValidateMessage.isPublished.formatMessage })
-  isPublished: boolean;
+  // @ApiProperty({ description: 'Признак "опубликована"', example: 'true' })
+  // @IsBoolean({ message: PostValidateMessage.isPublished.formatMessage })
+  // isPublished: boolean;
 
-  @ApiProperty({ description: 'Название публикации' })
+  @ApiProperty({ description: 'Название публикации', example: 'Моя видео публикация' })
   @ValidateIf((o) => o.type === PostType.video)
   @Length(
     PostValidateValue.titleVideo.minLength,
@@ -49,12 +49,12 @@ export class CreatePostDto {
   )
   titleVideo?: string;
 
-  @ApiProperty({ description: 'Ссылка на видео' })
+  @ApiProperty({ description: 'Ссылка на видео', example: 'https://my-videos.com/example-video' })
   @ValidateIf((o) => o.type === PostType.video)
   @IsUrl()
   urlVideo?: string;
 
-  @ApiProperty({ description: 'Название публикации' })
+  @ApiProperty({ description: 'Название публикации',  example: 'Моя текстовая публикация'})
   @ValidateIf((o) => o.type === PostType.text)
   @Length(
     PostValidateValue.titleText.minLength,
@@ -64,7 +64,6 @@ export class CreatePostDto {
   titleText?: string;
 
   @ApiProperty({ description: 'Анонс публикации' })
-  @IsOptional()
   @ValidateIf((o) => o.type === PostType.text)
   @Length(
     PostValidateValue.previewText.minLength,
@@ -75,7 +74,7 @@ export class CreatePostDto {
 
   @ApiProperty({ description: 'Текст публикации' })
   @ValidateIf((o) => o.type === PostType.text)
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   @Length(
     PostValidateValue.text.minLength, 
@@ -86,7 +85,6 @@ export class CreatePostDto {
 
   @ApiProperty({ description: 'Текст цитаты' })
   @ValidateIf((o) => o.type === PostType.quote)
-  @IsOptional()
   @IsString()
   @Length(
     PostValidateValue.textQuote.minLength, 
@@ -97,7 +95,6 @@ export class CreatePostDto {
   
   @ApiProperty({ description: 'Автор цитаты' })
   @ValidateIf((o) => o.type === PostType.quote)
-  @IsOptional()
   @IsString()
   @Length(
     PostValidateValue.authorQuote.minLength, 
@@ -108,7 +105,6 @@ export class CreatePostDto {
 
   @ApiProperty({ description: 'Фотография' })
   @ValidateIf((o) => o.type === PostType.photo)
-  @IsOptional()
   @IsUrl()
   urlPhoto?: string;
 

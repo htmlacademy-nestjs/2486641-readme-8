@@ -14,8 +14,8 @@ export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
         entity.type = dto.type;
         entity.tags = dto.tags;
         entity.userId = dto.userId;
-        entity.postDate = dto.postDate;
-        entity.isPublished = dto.isPublished;
+        entity.postDate = new Date();
+        entity.isPublished = false;
         entity.likes = [];
         entity.comments = [];
 

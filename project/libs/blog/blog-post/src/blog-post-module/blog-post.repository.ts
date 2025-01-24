@@ -41,6 +41,22 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     entity.id = record.id;
   }
 
+  public async update(entity: BlogPostEntity): Promise<void> {
+    const data = entity.toPOJO();
+    await this.client.post.update({
+      where: { id: data.id },
+      data: {
+        ...data,
+        comments: {
+          connect: [],
+        },
+        likes: {
+          connect: [],
+        }
+      }
+    });
+  }
+
   public async deleteById(id: string): Promise<void> {
     await this.client.post.delete({ where: { id } });
   }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -14,6 +14,14 @@ export class BlogController {
   constructor(
     private readonly httpService: HttpService,
   ) {}
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @Get('/:id')
+  public async get(@Param('id') id: string) {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${id}`);
+    return data;
+  }
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)

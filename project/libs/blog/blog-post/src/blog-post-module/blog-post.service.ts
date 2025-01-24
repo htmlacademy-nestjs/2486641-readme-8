@@ -4,7 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostQuery } from './blog-post.query';
-import { PaginationResult } from '@project/core';
+import { PaginationResult, Post } from '@project/core';
 import { NotifyService } from '@project/blog-notify';
 
 @Injectable()
@@ -15,7 +15,8 @@ export class BlogPostService {
   ) { }
 
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
-    const newPost = new BlogPostEntity({...dto, comments: [], likes: []})
+    const postData: Post = { ...dto, isPublished: true, postDate: new Date(), comments: [], likes: [] };
+    const newPost = new BlogPostEntity(postData);
     await this.blogPostRepository.save(newPost);
     //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
     return newPost;
@@ -30,7 +31,9 @@ export class BlogPostService {
   }
 
   public async update(id: string, dto: UpdatePostDto) {
-    return `This action updates a #${id} blogPostModule`;
+    const post = (await this.findById(id)).toPOJO();
+    const entity = new BlogPostEntity(Object.assign(post, dto));
+    return await this.blogPostRepository.update(entity);
   }
 
   public async remove(id: string, userId: string): Promise<void> {

@@ -17,13 +17,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2Z
 
 # Create a new post
 POST http://localhost:3000/api/blog HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzU0NzE1MSwiZXhwIjoxNzM3NTQ3NDUxfQ.4b08bkGttfN_rAv_OgvHJGF7yOpcxsbhMFEMVNgVUvk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc0MDAxNiwiZXhwIjoxNzM3NzQwMzE2fQ.2-uvPeQp05abW0l_Xyb4AJZRKvFz9G-ZcPYPQLhgPQo
 Content-Type: application/json
 
 {
-  "type": "text",
-  "isPublished": true,
-  "titleText": "Расширенный текст публикации"
+  "type": "link",
+  "urlLink": "https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme"
 }
 ###
 
@@ -32,4 +31,24 @@ DELETE http://localhost:3000/api/blog/6a17820e-9181-47e7-ae49-4d91b084f410 HTTP/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzcxMjE0NCwiZXhwIjoxNzM3NzEyNDQ0fQ.Rz0YqEKh0lXDTkIxMvY7JUqA4CgBXO4BY2Ynj5GotTc
 Content-Type: application/json
 
+###
+# Get post
+GET http://localhost:3000/api/blog/1e3cb76b-8ec4-4d23-b930-c186d6fb2d1c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc0MTcyOSwiZXhwIjoxNzM3NzQyMDI5fQ.l7GVE415OOQOUBqE-UxwOrX5KhrA8WuDo26MTfcvX8c
+Content-Type: application/json
+
+###
+# Update post
+PATCH http://localhost:3000/api/blog/1e3cb76b-8ec4-4d23-b930-c186d6fb2d1c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc0MzM0NywiZXhwIjoxNzM3NzQzNjQ3fQ.WIBDvtihx5eL9VXGNhWVqsw1s9nu6of0Kb2u6xUdIo4
+Content-Type: application/json
+
+{
+  "tags": ["tag1", "tag2"],
+  "postDate": "2025-01-30T17:37:50.831Z",
+  "isPublished": false,
+  "likes": [],
+  "comments": [],
+  "urlLink": "https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme"
+}
 ###

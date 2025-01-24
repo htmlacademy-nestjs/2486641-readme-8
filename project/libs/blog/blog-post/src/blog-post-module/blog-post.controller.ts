@@ -36,6 +36,7 @@ export class BlogPostController {
 
   @Get(':id')
   public async findOne(@Param('id') id: string) {
+    console.log('id=',id);
     return this.blogPostService.findById(id);
   }
 
@@ -52,7 +53,6 @@ export class BlogPostController {
     @Param('id') id: string,
     @Query('userId') userId: string,
   ) {
-    console.log('userId=', userId);
     return this.blogPostService.remove(id, userId);
   }
 }
