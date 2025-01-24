@@ -33,6 +33,7 @@ export class CreatePostDto {
 
   @ApiProperty({ description: 'Дата публикации' })
   @IsDateString()
+  @IsOptional()
   postDate?: Date;
 
   @ApiProperty({ description: 'Признак "опубликована"' })
@@ -63,6 +64,7 @@ export class CreatePostDto {
   titleText?: string;
 
   @ApiProperty({ description: 'Анонс публикации' })
+  @IsOptional()
   @ValidateIf((o) => o.type === PostType.text)
   @Length(
     PostValidateValue.previewText.minLength,

@@ -17,6 +17,7 @@ export class AxiosExceptionFilter implements ExceptionFilter {
       .json({
         statusCode: status,
         message,
+        detailMessage: error.response?.data['message'],
       });
   }
 }

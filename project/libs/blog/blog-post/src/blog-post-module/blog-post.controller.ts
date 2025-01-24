@@ -48,7 +48,11 @@ export class BlogPostController {
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
-    return this.blogPostService.remove(id);
+  public async remove(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ) {
+    console.log('userId=', userId);
+    return this.blogPostService.remove(id, userId);
   }
 }
