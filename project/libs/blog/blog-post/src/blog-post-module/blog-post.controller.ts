@@ -43,9 +43,10 @@ export class BlogPostController {
   @Patch(':id')
   public async update(
     @Param('id') id: string,
+    @Query('userId') userId: string,
     @Body() dto: UpdatePostDto
   ) {
-    return this.blogPostService.update(id, dto);
+    return this.blogPostService.update(id, userId, dto);
   }
 
   @Delete(':id')

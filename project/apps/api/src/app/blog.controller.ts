@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
 import { InjectUserIdInterceptor } from '@project/interceptors';
-import { CreatePostDto } from '@project/blog-post';
+import { CreatePostDto, UpdatePostDto } from '@project/blog-post';
 
 @Controller('blog')
 @UseFilters(AxiosExceptionFilter)
@@ -36,9 +36,11 @@ export class BlogController {
   @Patch('/:id')
   public async update(
     @Param('id') id: string,
-    @Body() dto: CreatePostDto
+    @Query('userId') userId: string,
+    @Body() dto: UpdatePostDto
   ) {
-    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Blog}/${id}`, dto);
+    console.dir(dto);
+    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Blog}/${id}?userId=${userId}`, dto);
     return data;
   }
 
@@ -47,7 +49,7 @@ export class BlogController {
   @Delete('/:id')
   public async remove(
     @Param('id') id: string,
-    @Body() { userId }
+    @Query('userId') userId: string
   ) {
     console.log('userId=',userId);
     const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${id}?userId=${userId}`);

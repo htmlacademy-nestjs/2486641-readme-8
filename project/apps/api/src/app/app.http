@@ -27,8 +27,8 @@ Content-Type: application/json
 ###
 
 # Delete post
-DELETE http://localhost:3000/api/blog/6a17820e-9181-47e7-ae49-4d91b084f410 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzcxMjE0NCwiZXhwIjoxNzM3NzEyNDQ0fQ.Rz0YqEKh0lXDTkIxMvY7JUqA4CgBXO4BY2Ynj5GotTc
+DELETE http://localhost:3000/api/blog/6a17820e-9181-47e7-ae49-4d91b084f4101 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc3NjgxNCwiZXhwIjoxNzM3Nzc3MTE0fQ.764_ksZUkf5nz9bKwqXvTRXlqL7Fy6xSYZ5B1Wb_H3I
 Content-Type: application/json
 
 ###
@@ -40,7 +40,7 @@ Content-Type: application/json
 ###
 # Update post
 PATCH http://localhost:3000/api/blog/1e3cb76b-8ec4-4d23-b930-c186d6fb2d1c HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc0MzM0NywiZXhwIjoxNzM3NzQzNjQ3fQ.WIBDvtihx5eL9VXGNhWVqsw1s9nu6of0Kb2u6xUdIo4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc3NzE1MiwiZXhwIjoxNzM3Nzc3NDUyfQ.7HAJFDIzUHkaYT8vIpOpHejVSUqA-df_XWNC8bLxSKU
 Content-Type: application/json
 
 {

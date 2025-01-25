@@ -30,8 +30,11 @@ export class BlogPostService {
     return await this.blogPostRepository.findById(id);
   }
 
-  public async update(id: string, dto: UpdatePostDto) {
-    const post = (await this.findById(id)).toPOJO();
+  public async update(id: string, userId: string, dto: UpdatePostDto) {
+    const post = await this.findById(id);
+    if (post.userId !== userId) {
+      throw new HttpException('Запрещено редактировать чужие посты', HttpStatus.BAD_REQUEST);
+    }
     const entity = new BlogPostEntity(Object.assign(post, dto));
     return await this.blogPostRepository.update(entity);
   }
