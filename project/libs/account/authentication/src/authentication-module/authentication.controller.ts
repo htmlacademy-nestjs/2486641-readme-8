@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -12,6 +12,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { RequestWithUser } from './request-with-user.interface';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -60,11 +61,17 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    return existUser.toPOJO();
+    return fillDto(UserRdo, existUser.toPOJO());
+  }
+
+  @Patch('change-password')
+  public async changePassword(@Body() dto: ChangePasswordDto) {
+    const user = await this.authService.changePassword(dto);
+    return user.toPOJO();
   }
 
   @UseGuards(JwtRefreshGuard)
