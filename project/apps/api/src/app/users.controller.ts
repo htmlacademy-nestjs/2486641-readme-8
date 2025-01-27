@@ -1,11 +1,12 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Post, Req, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseFilters, UseGuards } from '@nestjs/common';
 
 import { CreateUserDto, LoginUserDto } from '@project/authentication';
 
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
-import { InjectUserIdInterceptor } from '@project/interceptors';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { CheckAnonymousGuard } from './guards/check-anonymous.guard';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -14,7 +15,8 @@ export class UsersController {
     private readonly httpService: HttpService
   ) {}
 
-  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  @UseGuards(CheckAnonymousGuard)
   @Post('register')
   public async create(
     @Body() dto: CreateUserDto

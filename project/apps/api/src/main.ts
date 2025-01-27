@@ -14,6 +14,7 @@ async function bootstrap() {
     .setTitle('The «Readme» application')
     .setDescription('API Gateway service API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

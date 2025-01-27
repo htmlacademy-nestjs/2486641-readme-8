@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -6,6 +6,8 @@ import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
 import { InjectUserIdInterceptor } from '@project/interceptors';
 import { CreatePostDto, UpdatePostDto } from '@project/blog-post';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { UserId } from './decorators/user-id.decorator';
 
 @Controller('blog')
 @UseFilters(AxiosExceptionFilter)
@@ -17,6 +19,7 @@ export class BlogController {
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
   @Get('/:id')
   public async get(@Param('id') id: string) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${id}`);
@@ -25,33 +28,38 @@ export class BlogController {
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
   @Post('/')
-  public async create(@Body() dto: CreatePostDto) {
+  public async create(
+    @Body() dto: CreatePostDto,
+    @UserId() userId: string
+  ) {
+    dto.userId = userId;
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, dto);
     return data;
   }
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
   @Patch('/:id')
   public async update(
     @Param('id') id: string,
-    @Query('userId') userId: string,
+    @UserId() userId: string,
     @Body() dto: UpdatePostDto
   ) {
-    console.dir(dto);
     const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Blog}/${id}?userId=${userId}`, dto);
     return data;
   }
 
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
   @Delete('/:id')
   public async remove(
     @Param('id') id: string,
-    @Query('userId') userId: string
+    @UserId() userId: string
   ) {
-    console.log('userId=',userId);
     const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${id}?userId=${userId}`);
     return data;
   }

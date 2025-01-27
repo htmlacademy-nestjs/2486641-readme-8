@@ -31,7 +31,8 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
-    return newUser.toPOJO();
+    const userToken = await this.authService.createUserToken(newUser);
+    return fillDto(LoggedUserRdo, { ...newUser.toPOJO(), ...userToken });  
   }
 
   @ApiResponse({
