@@ -1,5 +1,3 @@
-import { Comment } from "../comment/comment.interface";
-import { Like } from "../like/like.interface";
 import { PostType } from "./const"
 
 export interface Post {
@@ -13,8 +11,8 @@ export interface Post {
   originalId?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  comments?: Comment[];
-  likes?: Like[];
+  commentsCount?: number;
+  likesCount?: number;
   // video  
   titleVideo?: string;
   urlVideo?: string;

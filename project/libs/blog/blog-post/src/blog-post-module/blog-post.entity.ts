@@ -1,6 +1,4 @@
 import { Entity, Post, PostType, StorableEntity } from "@project/core";
-import { BlogCommentEntity, BlogCommentFactory } from '@project/blog-comment';
-import { BlogLikeFactory, BlogLikeEntity } from '@project/blog-like';
 
 export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   // общие
@@ -30,10 +28,8 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   // служебные
   public createdAt: Date;
   public updatedAt: Date;
-  // вложенные сущности
-  public comments: BlogCommentEntity[];
+
   public commentsCount: number;
-  public likes: BlogLikeEntity[];
   public likesCount: number;
 
   constructor(post?: Post) {
@@ -56,8 +52,6 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
     this.isReposted = (!!post.originalId);
     this.createdAt = post.createdAt ?? undefined;
     this.updatedAt = post.updatedAt ?? undefined;
-    this.likes = [];
-    this.comments = [];
 
     // video  
     this.titleVideo = post.titleVideo;
@@ -75,19 +69,8 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
     this.urlLink = post.urlLink;
     this.descriptionLink = post.descriptionLink;
 
-    const blogCommentFactory = new BlogCommentFactory();
-    for (const comment of post.comments) {
-      const blogCommentEntity = blogCommentFactory.create(comment);
-      this.comments.push(blogCommentEntity);
-    }
-    this.commentsCount = this.comments.length;
-
-    const blogLikeFactory = new BlogLikeFactory();
-    for (const like of post.likes) {
-      const blogLikeEntity = blogLikeFactory.create(like);
-      this.likes.push(blogLikeEntity);
-    }
-    this.likesCount = this.likes.length;
+    this.commentsCount = post.commentsCount ?? undefined;
+    this.likesCount = post.likesCount ?? undefined;
   }
 
   toPOJO(): Post {
@@ -112,8 +95,8 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
       descriptionLink: this.descriptionLink,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      likes: this.likes.map((likeEntity) => likeEntity.toPOJO()),
-      comments: this.comments.map((commentEntity) => commentEntity.toPOJO()),
+      commentsCount: this.commentsCount,
+      likesCount: this.likesCount,
     };
   }
 

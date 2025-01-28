@@ -15,7 +15,7 @@ export class BlogPostService {
   ) { }
 
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
-    const postData: Post = { ...dto, isPublished: true, postDate: new Date(), comments: [], likes: [] };
+    const postData: Post = { ...dto, isPublished: true, postDate: new Date() };
     const newPost = new BlogPostEntity(postData);
     await this.blogPostRepository.save(newPost);
     //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
