@@ -5,9 +5,10 @@ import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
 import { InjectUserIdInterceptor } from '@project/interceptors';
-import { BlogPostQuery, CreatePostDto, UpdatePostDto } from '@project/blog-post';
+import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto } from '@project/blog-post';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('blog/posts/')
 @UseFilters(AxiosExceptionFilter)
@@ -40,8 +41,8 @@ export class BlogController {
     @Body() dto: CreatePostDto,
     @UserId() userId: string
   ) {
-    dto.userId = userId;
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, dto);
+    const postData: CreateBlogPostDto = { ...dto, userId };
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, postData);
     return data;
   }
 
