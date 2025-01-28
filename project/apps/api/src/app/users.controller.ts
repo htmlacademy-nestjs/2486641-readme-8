@@ -1,14 +1,15 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Get, Param, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 
-import { ChangePasswordDto, CreateUserDto, LoginUserDto } from '@project/authentication';
+import { AuthenticationResponseMessage, ChangePasswordDto, CreateUserDto, LoginUserDto, UserRdo } from '@project/authentication';
 
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { CheckAnonymousGuard } from './guards/check-anonymous.guard';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { InjectUserIdInterceptor } from '@project/interceptors';
+import { PaginationResult, Post as BlogPost } from '@project/core';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -17,9 +18,20 @@ export class UsersController {
     private readonly httpService: HttpService
   ) {}
 
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: AuthenticationResponseMessage.UserFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: AuthenticationResponseMessage.UserNotFound,
+  })
   @Get(':id')
-  public async getById(@Param('id') id: string) {
+  public async getById(@Param('id') id: string): Promise<UserRdo> {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Users}/${id}`);
+    const posts: PaginationResult<BlogPost> = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}?userId=${id}`)).data;
+    data['countPosts'] = posts.totalItems;
     return data;
   }
 

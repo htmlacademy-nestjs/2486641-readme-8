@@ -76,12 +76,17 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
 
   public async findAll(query?: BlogPostQuery): Promise<PaginationResult<BlogPostEntity>> {
     const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
-    const take = query?.limit;
+    const take = query?.limit ? query?.limit : undefined;
     const where: Prisma.PostWhereInput = {};
     const orderBy: Prisma.PostOrderByWithRelationInput = {};
     if (query?.tags) {
       where.tags = {
         hasSome: query.tags
+      }
+    }
+    if (query?.userId) {
+      where.userId = {
+        equals: query?.userId
       }
     }
 
