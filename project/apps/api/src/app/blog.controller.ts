@@ -75,10 +75,10 @@ export class BlogController {
   @ApiBearerAuth()
   @Post('/:id/likes')
   public async createLike(
-    @Param('id') id: string,
+    @Param('id') postId: string,
     @UserId() userId: string
   ) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${id}/likes`, { params: { userId } });
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/likes`, {} , { params: { userId: userId } });
     return data;
   }
 
@@ -87,10 +87,11 @@ export class BlogController {
   @ApiBearerAuth()
   @Delete('/:id/likes/:likeId')
   public async deleteLike(
-    @Param() params,
+    @Param('id') postId: string,
+    @Param('likeId') likeId: string,
     @UserId() userId: string
   ) {
-    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${params.id}/likes/${params.likeId}`, { params: { userId } });
+    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${postId}/likes/${likeId}`, { params: { userId } });
     return data;
   }
 }
