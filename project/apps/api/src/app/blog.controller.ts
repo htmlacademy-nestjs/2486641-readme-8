@@ -24,9 +24,6 @@ export class BlogController {
     return data;
   }
 
-  @UseGuards(CheckAuthGuard)
-  @UseInterceptors(InjectUserIdInterceptor)
-  @ApiBearerAuth()
   @Get('/:id')
   public async get(@Param('id') id: string) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${id}`);

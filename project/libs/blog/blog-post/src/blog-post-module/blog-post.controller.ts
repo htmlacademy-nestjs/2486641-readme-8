@@ -7,12 +7,18 @@ import {
   Param,
   Delete,
   Query,
+  HttpStatus,
 } from '@nestjs/common';
 import { BlogPostService } from './blog-post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostQuery } from './blog-post.query';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BlogPostRdo } from './rdo/blog-post.rdo';
+import { fillDto } from '@project/helpers';
+import { BlogPostWithPaginationRdo } from './rdo/blog-post-with-pagination.rdo';
 
+@ApiTags('Публикации в блоге')
 @Controller('posts')
 export class BlogPostController {
   constructor(
@@ -25,8 +31,15 @@ export class BlogPostController {
   }
 
   @Get('/')
+  @ApiOperation({ summary: 'Получение списка публикаций.' })
+  @ApiResponse({ status: HttpStatus.OK, type: BlogPostWithPaginationRdo })
   public async findAll(@Query() query: BlogPostQuery) {
-    return this.blogPostService.findAll(query);
+    const posts = await this.blogPostService.findAll(query);
+    const result = {
+      ...posts,
+      entities: posts.entities.map((post) => post.toPOJO()),
+    }
+    return fillDto(BlogPostWithPaginationRdo, result);
   }
 
   @Get('/send')
@@ -35,8 +48,11 @@ export class BlogPostController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Просмотр детальной информации о публикации.' })
+  @ApiResponse({ status: HttpStatus.OK, type: BlogPostRdo })
   public async findOne(@Param('id') id: string) {
-    return this.blogPostService.findById(id);
+    const post = await this.blogPostService.findById(id);
+    return fillDto(BlogPostRdo, post);
   }
 
   @Patch(':id')

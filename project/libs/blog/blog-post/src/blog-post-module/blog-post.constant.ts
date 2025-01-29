@@ -1,4 +1,4 @@
-import { SortDirection } from "@project/core";
+import { PostType, SortDirection } from "@project/core";
 
 export const DEFAULT_POST_COUNT_LIMIT = 25;
 export const DEFAULT_SORT_DIRECTION = SortDirection.Desc;
@@ -70,4 +70,30 @@ export const PostValidateMessage = {
   authorQuote: {
     lengthMessage: `min length for author quote is ${PostValidateValue.authorQuote.minLength}, max is ${PostValidateValue.authorQuote.maxLength}`,
   },
+} as const;
+
+export const PostFieldDescription = {
+  id: { description: 'Уникальный идентификатор публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  originalId: { description: 'Идентификатор оригинальной публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  type: { description: 'Тип контента', example: PostType.text },
+  tags: { description: 'Список тэгов', example: ['Tag1, Tag2'] },
+  userId: { description: 'Идентификатор автора публикации', example: '6766e16f90c0264a74a1f9d4' },
+  originalUserId: { description: 'Идентификатор оригинального автора публикации', example: '6766e16f90c0264a74a1f9d4' },
+  postDate: { description: 'Дата публикации', example: new Date() },
+  isPublished: { description: 'Признак "опубликована"', example: 'true' },
+  titleVideo: { description: 'Название публикации', example: 'Моя видео публикация' },
+  urlVideo: { description: 'Ссылка на видео', example: 'https://my-videos.com/example-video' },
+  titleText: { description: 'Название публикации',  example: 'Моя текстовая публикация'},
+  previewText: { description: 'Анонс публикации' },
+  text: { description: 'Текст публикации' },
+  textQuote: { description: 'Текст цитаты' },
+  authorQuote: { description: 'Автор цитаты' },
+  urlPhoto: { description: 'Фотография' },
+  urlLink: { description: 'Ссылка' },
+  descriptionLink: { description: 'Описание ссылки' },
+  isReposted: { description: 'Признак "репост"', example: 'true' },
+  createdAt: { description: 'Дата создания', example: new Date() },
+  updatedAt: { description: 'Дата редактирования', example: new Date() },
+  commentsCount: { description: 'Количество комментариев', example: 50 },
+  likesCount: { description: 'Количество лайков', example: 77 },
 } as const;
