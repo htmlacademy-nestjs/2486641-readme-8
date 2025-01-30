@@ -92,4 +92,18 @@ export class BlogController {
     const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${postId}/likes/${likeId}`, { params: { userId } });
     return data;
   }
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  @Post('/:id/repost')
+  public async repost(
+    @Param('id') postId: string,
+    @UserId() userId: string
+  ) {
+    console.log('userId=',userId);
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/repost`, {}, { params: { userId } });
+    return data;
+  }
+
 }

@@ -26,17 +26,7 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
 
   public async save(entity: BlogPostEntity): Promise<void> {
     const data = entity.toPOJO();
-    const record = await this.client.post.create({
-      data: {
-        ...data,
-        comments: {
-          connect: [],
-        },
-        likes: {
-          connect: [],
-        }
-      }
-    });
+    const record = await this.client.post.create({ data });
 
     entity.id = record.id;
   }
@@ -45,15 +35,7 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     const data = entity.toPOJO();
     await this.client.post.update({
       where: { id: data.id },
-      data: {
-        ...data,
-        comments: {
-          connect: [],
-        },
-        likes: {
-          connect: [],
-        }
-      }
+      data
     });
   }
 

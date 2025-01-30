@@ -26,6 +26,8 @@ export class BlogPostController {
   ) {}
 
   @Post('/')
+  @ApiOperation({ summary: 'Создание новой публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   public async create(@Body() dto: CreatePostDto) {
     return this.blogPostService.create(dto);
   }
@@ -56,6 +58,8 @@ export class BlogPostController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Редактирование публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED })
   public async update(
     @Param('id') id: string,
     @Query('userId') userId: string,
@@ -65,10 +69,23 @@ export class BlogPostController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Удаление публикации.' })
+  @ApiResponse({ status: HttpStatus.OK })
   public async remove(
     @Param('id') id: string,
     @Query('userId') userId: string,
   ) {
     return this.blogPostService.remove(id, userId);
+  }
+
+  @Post('/:id/repost')
+  @ApiOperation({ summary: 'Репост публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
+  public async repost(
+    @Param('id') id: string,
+    @Query('userId') userId: string,
+  ) {
+    console.log('userId=',userId);
+    return this.blogPostService.repost(id, userId);
   }
 }

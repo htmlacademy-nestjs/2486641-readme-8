@@ -6,6 +6,7 @@ import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostQuery } from './blog-post.query';
 import { PaginationResult, Post } from '@project/core';
 import { NotifyService } from '@project/blog-notify';
+import { BlogPostFactory } from './blog-post.factory';
 
 @Injectable()
 export class BlogPostService {
@@ -54,5 +55,20 @@ export class BlogPostService {
     }
     const posts = documents.map((item) => new BlogPostEntity(item).toPOJO());
     return this.notifyService.sendPosts(posts)
+  }
+
+  public async repost(postId: string, userId: string): Promise<BlogPostEntity> {
+    const postsByUser = await this.blogPostRepository.findAll({ userId });
+    if (postsByUser.entities.find((post) => post.originalId === postId)) {
+      throw new HttpException('Репост одной публикации можно сделать один раз', HttpStatus.BAD_REQUEST);
+    }
+    const post = await this.findById(postId);
+    if (post.userId === userId) {
+      throw new HttpException('Невозможно сделать репост своей публикации', HttpStatus.BAD_REQUEST);
+    }
+    const postData = post.toPOJO();
+    const newPost = BlogPostFactory.createRepostFromPost(postData, userId);
+    await this.blogPostRepository.save(newPost);
+    return newPost;
   }
 }

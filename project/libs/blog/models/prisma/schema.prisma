@@ -45,8 +45,9 @@ model Post {
 
   comments       Comment[]
   likes          Like[]
-  original       Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
   inheritedPosts Post[]    @relation(name: "post_original_fk")
+
+  original       Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
 
   @@index([userId])
   @@index([postDate])
