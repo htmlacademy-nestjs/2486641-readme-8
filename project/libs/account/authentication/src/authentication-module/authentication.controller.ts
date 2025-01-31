@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthenticationResponseMessage } from './authentication.constant';
 import { LoggedUserRdo } from '../rdo/logged-user.rdo';
 import { UserRdo } from '../rdo/user.rdo';
@@ -20,7 +20,8 @@ export class AuthenticationController {
   constructor(
     private readonly authService: AuthenticationService,
   ) {}
-
+  
+  @ApiOperation({ summary: 'Регистрация пользователя.' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: AuthenticationResponseMessage.UserCreated,
@@ -36,6 +37,7 @@ export class AuthenticationController {
     return fillDto(LoggedUserRdo, { ...newUser.toPOJO(), ...userToken });  
   }
 
+  @ApiOperation({ summary: 'Авторизация пользователя.' })
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -52,6 +54,7 @@ export class AuthenticationController {
     return fillDto(LoggedUserRdo, { ...user.toPOJO(), ...userToken });  
   }
 
+  @ApiOperation({ summary: 'Получение детальной информации о пользователе.' })
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
@@ -61,19 +64,24 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  //@UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     return fillDto(UserRdo, existUser.toPOJO());
   }
 
+  @ApiOperation({ summary: 'Смена пароля пользователя.' })
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+  })
   @Patch('change-password')
   public async changePassword(@Body() dto: ChangePasswordDto) {
     const user = await this.authService.changePassword(dto);
-    return user.toPOJO();
+    return fillDto(UserRdo, user.toPOJO());
   }
 
+  @ApiOperation({ summary: 'Получение новой пары токенов.' })
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)

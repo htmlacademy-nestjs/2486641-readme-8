@@ -29,11 +29,11 @@ export class BlogLikeController {
   //   return await this.blogLikeService.findById(id);
   // }
 
-  @Delete('/:id')
+  @Delete('/')
   public async remove(
-    @Param('id') id: string,
+    @Param('postId') postId: string,
     @Query('userId') userId: string,
   ) {
-    return await this.blogLikeService.remove(id, userId);
+    return await this.blogLikeService.remove(postId, userId);
   }
 }

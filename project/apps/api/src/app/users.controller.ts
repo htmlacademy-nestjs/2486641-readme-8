@@ -1,11 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 
-import { AuthenticationResponseMessage, ChangePasswordDto, CreateUserDto, LoginUserDto, UserRdo } from '@project/authentication';
+import { AuthenticationResponseMessage, ChangePasswordDto, CreateUserDto, LoggedUserRdo, LoginUserDto, UserRdo } from '@project/authentication';
 
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CheckAnonymousGuard } from './guards/check-anonymous.guard';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { InjectUserIdInterceptor } from '@project/interceptors';
@@ -18,6 +18,7 @@ export class UsersController {
     private readonly httpService: HttpService
   ) {}
 
+  @ApiOperation({ summary: 'Получение детальной информации о пользователе.' })
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
@@ -36,6 +37,15 @@ export class UsersController {
     return data;
   }
 
+  @ApiOperation({ summary: 'Регистрация пользователя.' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: AuthenticationResponseMessage.UserCreated,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: AuthenticationResponseMessage.UserExist,
+  })  
   @ApiBearerAuth()
   @UseGuards(CheckAnonymousGuard)
   @Post('register')
@@ -45,7 +55,12 @@ export class UsersController {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/register`, dto);
     return data;
   }
-
+  
+  @ApiOperation({ summary: 'Смена пароля пользователя.' })
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+  })
   @ApiBearerAuth()
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
@@ -57,6 +72,16 @@ export class UsersController {
     return data;
   }
 
+  @ApiOperation({ summary: 'Авторизация пользователя.' })
+  @ApiResponse({
+    type: LoggedUserRdo,
+    status: HttpStatus.OK,
+    description: AuthenticationResponseMessage.LoggedSuccess,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.LoggedError,
+  })
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto) {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/login`, loginUserDto);
@@ -64,6 +89,7 @@ export class UsersController {
   }
 
   @Post('refresh')
+  @ApiOperation({ summary: 'Получение новой пары токенов.' })
   public async refreshToken(@Req() req: Request) {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/refresh`, null, {
       headers: {

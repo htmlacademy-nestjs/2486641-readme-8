@@ -1,12 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
 import { InjectUserIdInterceptor } from '@project/interceptors';
-import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto } from '@project/blog-post';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto, BlogPostRdo, BlogPostWithPaginationRdo } from '@project/blog-post';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 
@@ -19,12 +19,16 @@ export class BlogController {
   ) { }
 
   @Get('/')
+  @ApiOperation({ summary: 'Получение списка публикаций.' })
+  @ApiResponse({ status: HttpStatus.OK, type: BlogPostWithPaginationRdo })
   public async getAll(@Query() params: BlogPostQuery) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/`, { params });
     return data;
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Просмотр детальной информации о публикации.' })
+  @ApiResponse({ status: HttpStatus.OK, type: BlogPostRdo })
   public async get(@Param('id') id: string) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${id}`);
     return data;
@@ -33,6 +37,8 @@ export class BlogController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Создание новой публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   @Post('/')
   public async create(
     @Body() dto: CreatePostDto,
@@ -46,6 +52,8 @@ export class BlogController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Редактирование публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED })
   @Patch('/:id')
   public async update(
     @Param('id') id: string,
@@ -59,6 +67,8 @@ export class BlogController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Удаление публикации.' })
+  @ApiResponse({ status: HttpStatus.OK })
   @Delete('/:id')
   public async remove(
     @Param('id') id: string,
@@ -96,6 +106,8 @@ export class BlogController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Репост публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   @Post('/:id/repost')
   public async repost(
     @Param('id') postId: string,

@@ -16,14 +16,14 @@ export class BlogLikeRepository extends BasePostgresRepository<BlogLikeEntity, L
 
   public async save(entity: BlogLikeEntity): Promise<void> {
     const record = await this.client.like.create({
-      data: {...entity.toPOJO()}
+      data: { ...entity.toPOJO() }
     });
 
     entity.id = record.id;
   }
 
   public async findById(id: string): Promise<BlogLikeEntity> {
-    const document = await this.client.like.findUnique({where: {id}});
+    const document = await this.client.like.findUnique({ where: { id } });
 
     if (!document) {
       throw new NotFoundException(`Like with id = ${id} not found`);
@@ -33,12 +33,18 @@ export class BlogLikeRepository extends BasePostgresRepository<BlogLikeEntity, L
   }
 
   public async deleteById(id: string): Promise<void> {
-    await this.client.like.delete({where: {id}});
+    await this.client.like.delete({ where: { id } });
   }
 
   public async findByPostId(postId: string): Promise<BlogLikeEntity[]> {
-    const documents = await this.client.like.findMany({where: {postId}});
+    const documents = await this.client.like.findMany({ where: { postId } });
 
     return documents.map((document) => this.createEntityFromDocument(document));
+  }
+
+  public async findByPostAndUser(postId: string, userId: string): Promise<BlogLikeEntity> {
+    const document = await this.client.like.findFirst({ where: { postId, userId } });
+
+    return this.createEntityFromDocument(document);
   }
 }
