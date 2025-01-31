@@ -16,7 +16,7 @@ export class BlogPostService {
   ) { }
 
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
-    const postData: Post = { ...dto, isPublished: true, postDate: new Date() };
+    const postData: Post = { ...dto, isPublished: true, postDate: new Date(), isReposted: false };
     const newPost = new BlogPostEntity(postData);
     await this.blogPostRepository.save(newPost);
     //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
@@ -67,8 +67,8 @@ export class BlogPostService {
       throw new HttpException('Невозможно сделать репост своей публикации', HttpStatus.BAD_REQUEST);
     }
     const postData = post.toPOJO();
-    const newPost = BlogPostFactory.createRepostFromPost(postData, userId);
-    await this.blogPostRepository.save(newPost);
-    return newPost;
+    const newRepost = BlogPostFactory.createRepostFromPost(postData, userId);
+    await this.blogPostRepository.save(newRepost);
+    return newRepost;
   }
 }

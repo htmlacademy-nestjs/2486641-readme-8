@@ -49,7 +49,7 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
     this.postDate = post.postDate ?? undefined;
     this.isPublished = post.isPublished;
     this.originalId = post.originalId ?? undefined;
-    this.isReposted = (!!post.originalId);
+    this.isReposted = post.isReposted ?? false;
     this.createdAt = post.createdAt ?? undefined;
     this.updatedAt = post.updatedAt ?? undefined;
 
@@ -83,6 +83,7 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
       postDate: this.postDate,
       isPublished: this.isPublished,
       originalId: this.originalId,
+      isReposted: this.isReposted,
       titleVideo: this.titleVideo,
       urlVideo: this.urlVideo,
       titleText: this.titleText,

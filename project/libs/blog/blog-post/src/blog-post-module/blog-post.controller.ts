@@ -29,7 +29,8 @@ export class BlogPostController {
   @ApiOperation({ summary: 'Создание новой публикации.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   public async create(@Body() dto: CreatePostDto) {
-    return this.blogPostService.create(dto);
+    const result = (await this.blogPostService.create(dto)).toPOJO();
+    return fillDto(BlogPostRdo, result);
   }
 
   @Get('/')
@@ -85,7 +86,7 @@ export class BlogPostController {
     @Param('id') id: string,
     @Query('userId') userId: string,
   ) {
-    console.log('userId=',userId);
-    return this.blogPostService.repost(id, userId);
+    const result = (await this.blogPostService.repost(id, userId)).toPOJO();
+    return fillDto(BlogPostRdo, result);
   }
 }

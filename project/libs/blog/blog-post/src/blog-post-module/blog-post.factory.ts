@@ -4,32 +4,22 @@ import { BlogPostEntity } from "./blog-post.entity";
 
 @Injectable()
 export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
-    public create(entityPlainData: Post): BlogPostEntity {
-        return new BlogPostEntity(entityPlainData);
-    }
+  public create(entityPlainData: Post): BlogPostEntity {
+    return new BlogPostEntity(entityPlainData);
+  }
 
-    // public static createFromCreatePostDto(dto: CreatePostDto): BlogPostEntity {
-    //     const entity = new BlogPostEntity();
-    //     entity.type = dto.type;
-    //     entity.tags = dto.tags;
-    //     entity.userId = dto.userId;
-    //     entity.postDate = new Date();
-    //     entity.isPublished = false;
-
-    //     return entity;
-    // }
-
-    public static createRepostFromPost(post: Post, userId: string): BlogPostEntity {
-        delete post.id;
-        delete post.commentsCount;
-        delete post.likesCount;
-        delete post.createdAt;
-        delete post.updatedAt;
-        post.originalId = post.id;
-        post.originalUserId = post.userId;
-        post.userId = userId;
-        post.postDate = new Date();
-        const newPost = new BlogPostEntity(post);
-        return newPost;
-    }
+  public static createRepostFromPost(postData: Post, userId: string): BlogPostEntity {
+    postData.originalId = postData.id;
+    postData.originalUserId = postData.userId;
+    postData.userId = userId;
+    postData.postDate = new Date();
+    postData.isReposted = true;
+    postData.id = undefined;
+    postData.commentsCount = 0;
+    postData.likesCount = 0;
+    postData.createdAt = undefined;
+    postData.updatedAt = undefined;
+    const newPost = new BlogPostEntity(postData);
+    return newPost;
+  }
 }

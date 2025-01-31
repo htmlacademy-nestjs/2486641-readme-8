@@ -9,6 +9,7 @@ export interface Post {
   postDate?: Date;
   isPublished: boolean;
   originalId?: string;
+  isReposted: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   commentsCount?: number;
