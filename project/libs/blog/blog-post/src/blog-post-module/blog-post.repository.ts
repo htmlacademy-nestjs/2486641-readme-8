@@ -6,6 +6,7 @@ import { BlogPostFactory } from './blog-post.factory';
 import { PrismaClientService } from '@project/models';
 import { BlogPostQuery } from './blog-post.query';
 import { Prisma } from '@prisma/client';
+import { SortField } from './blog-post.constant';
 
 @Injectable()
 export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, Post> {
@@ -50,11 +51,11 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     }
 
     return this.createEntityFromDocument(
-      { 
-        ...document, 
-        type: document.type as PostType, 
-        commentsCount: document._count.comments, 
-        likesCount: document._count.likes 
+      {
+        ...document,
+        type: document.type as PostType,
+        commentsCount: document._count.comments,
+        likesCount: document._count.likes
       }
     );
   }
@@ -63,20 +64,29 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit ? query?.limit : undefined;
     const where: Prisma.PostWhereInput = { isPublished: true };
-    const orderBy: Prisma.PostOrderByWithRelationInput = {};
+    const orderBy: Prisma.PostOrderByWithRelationInput =
+      (query.sortField === SortField.CommentsCount)
+        ? { comments: { _count: query.sortDirection } }
+        : (query.sortField === SortField.LikesCount)
+          ? { likes: { _count: query.sortDirection } }
+          : { postDate: query.sortDirection };
+    
     if (query?.tags) {
       where.tags = {
         hasSome: query.tags
       }
     }
+    
     if (query?.userId) {
       where.userId = {
         equals: query?.userId
       }
     }
 
-    if (query?.sortDirection) {
-      orderBy.createdAt = query.sortDirection;
+    if (query?.postType) {
+      where.type = {
+        equals: query?.postType
+      }
     }
 
     const [documents, postCount] = await Promise.all([
@@ -90,11 +100,11 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     return {
       entities: documents.map(
         (document) => this.createEntityFromDocument(
-          { 
-            ...document, 
-            type: document.type as PostType, 
-            commentsCount: document._count.comments, 
-            likesCount: document._count.likes 
+          {
+            ...document,
+            type: document.type as PostType,
+            commentsCount: document._count.comments,
+            likesCount: document._count.likes
           }
         )
       ),

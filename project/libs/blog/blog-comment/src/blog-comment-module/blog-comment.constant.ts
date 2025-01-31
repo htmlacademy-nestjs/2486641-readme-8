@@ -14,3 +14,12 @@ export const CommentValidateMessage = {
     formatMessage: 'text is required',
   }
 } as const;
+
+export const PostFieldDescription = {
+  id: { description: 'Уникальный идентификатор комментария', example: 'fc57663c-3675-4543-8653-2e29fbb37b1d' },
+  userId: { description: 'Идентификатор автора комментария', example: '6766e16f90c0264a74a1f9d4' },
+  postId: { description: 'Идентификатор публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  text: { description: 'Текст комментария', example: 'Пример комментария' },
+  createdAt: { description: 'Дата создания', example: new Date() },
+  updatedAt: { description: 'Дата редактирования', example: new Date() },
+} as const;

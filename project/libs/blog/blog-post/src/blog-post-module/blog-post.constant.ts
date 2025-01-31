@@ -97,3 +97,11 @@ export const PostFieldDescription = {
   commentsCount: { description: 'Количество комментариев', example: 50 },
   likesCount: { description: 'Количество лайков', example: 77 },
 } as const;
+
+export enum SortField {
+  PostDate = 'Дата публикации',
+  LikesCount = 'Количество лайков',
+  CommentsCount = 'Количество комментариев',
+};
+
+export const DEFAULT_SORT_FIELD = SortField.PostDate;
