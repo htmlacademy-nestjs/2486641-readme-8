@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { BlogCommentRepository } from './blog-comment.repository';
 import { BlogCommentEntity } from './blog-comment.entity';
@@ -8,8 +8,8 @@ export class BlogCommentService {
   constructor(
     private readonly blogCommentRepository: BlogCommentRepository
   ) { }
-  public async create(postId: string, userId: string, dto: CreateCommentDto): Promise<BlogCommentEntity> {
-    const newComment = new BlogCommentEntity({ postId, userId, ...dto });
+  public async create(postId: string, dto: CreateCommentDto): Promise<BlogCommentEntity> {
+    const newComment = new BlogCommentEntity({ postId, ...dto });
     await this.blogCommentRepository.save(newComment);
     return newComment;
   }
@@ -22,7 +22,11 @@ export class BlogCommentService {
     return await this.blogCommentRepository.findById(id);
   }
 
-  public async remove(id: string): Promise<void> {
+  public async remove(id: string, userId: string): Promise<void> {
+    const comment = await this.findById(id);
+    if (comment.userId !== userId) {
+      throw new HttpException('Запрещено удалять чужие комментарии', HttpStatus.BAD_REQUEST);
+    }
     return await this.blogCommentRepository.deleteById(id);
   }
 }

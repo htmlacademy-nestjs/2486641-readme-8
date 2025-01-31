@@ -9,6 +9,7 @@ import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto, BlogP
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
+import { CommentRdo, CreateCommentDto } from '@project/blog-comment';
 
 @Controller('blog/posts/')
 @UseFilters(AxiosExceptionFilter)
@@ -81,31 +82,6 @@ export class BlogController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
-  @Post('/:id/likes')
-  public async createLike(
-    @Param('id') postId: string,
-    @UserId() userId: string
-  ) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/likes`, {} , { params: { userId: userId } });
-    return data;
-  }
-
-  @UseGuards(CheckAuthGuard)
-  @UseInterceptors(InjectUserIdInterceptor)
-  @ApiBearerAuth()
-  @Delete('/:id/likes/:likeId')
-  public async deleteLike(
-    @Param('id') postId: string,
-    @Param('likeId') likeId: string,
-    @UserId() userId: string
-  ) {
-    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${postId}/likes/${likeId}`, { params: { userId } });
-    return data;
-  }
-
-  @UseGuards(CheckAuthGuard)
-  @UseInterceptors(InjectUserIdInterceptor)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Репост публикации.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   @Post('/:id/repost')
@@ -113,8 +89,71 @@ export class BlogController {
     @Param('id') postId: string,
     @UserId() userId: string
   ) {
-    console.log('userId=',userId);
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/repost`, {}, { params: { userId } });
+    return data;
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Поставить лайк публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Like created' })
+  @Post('/:id/likes')
+  public async createLike(
+    @Param('id') postId: string,
+    @UserId() userId: string
+  ) {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/likes`, {}, { params: { userId: userId } });
+    return data;
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Убрать лайк у публикации.' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Like deleted' })
+  @Delete('/:id/likes')
+  public async deleteLike(
+    @Param('id') postId: string,
+    @UserId() userId: string
+  ) {
+    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/${postId}/likes`, { params: { userId } });
+    return data;
+  }
+
+  @Post('/:id/comments')
+  @ApiOperation({ summary: 'Создать комментарий к публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: CommentRdo, description: 'Comment created' })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  public async createComment(
+    @Param('id') postId: string,
+    @Body() dto: CreateCommentDto
+  ) {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/${postId}/comments`, dto);
+    return data;
+  }
+
+  @Get('/:id/comments')
+  @ApiOperation({ summary: 'Список комментариев к публикации.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [CommentRdo] })
+  public async findComments(@Param('id') postId: string) {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${postId}/comments`);
+    return data;
+  }
+
+  @Delete('/comments/:commentId')
+  @ApiOperation({ summary: 'Удалить комментарий' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Comment deleted' })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  public async removeComment(
+    @Param('commentId') id: string,
+    @UserId() userId: string
+  ) {
+    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Blog}/comments/${id}`, { params: { userId } });
     return data;
   }
 
