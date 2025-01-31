@@ -16,10 +16,6 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     super(entityFactory, client);
   }
 
-  private async getPostCount(where: Prisma.PostWhereInput): Promise<number> {
-    return this.client.post.count({ where });
-  }
-
   private calculatePostsPage(totalCount: number, limit: number): number {
     return Math.ceil(totalCount / limit);
   }
@@ -88,7 +84,7 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
         where, orderBy, skip, take,
         include: { _count: { select: { comments: true, likes: true } } },
       }),
-      this.getPostCount(where),
+      this.client.post.count({ where }),
     ]);
 
     return {

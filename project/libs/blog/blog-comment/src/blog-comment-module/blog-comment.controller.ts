@@ -11,8 +11,10 @@ import {
 import { BlogCommentService } from './blog-comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { fillDto } from '@project/helpers';
-import { CommentRdo } from './rdo/comment.rdo';
+import { BlogCommentRdo } from './rdo/blog-comment.rdo';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BlogCommentQuery } from './blog-comment.query';
+import { BlogCommentWithPaginationRdo } from './rdo/blog-comment-with-pagination.rdo';
 
 @ApiTags('Комментарии к публикациям')
 @Controller()
@@ -21,21 +23,28 @@ export class BlogCommentController {
 
   @Post('posts/:postId/comments')
   @ApiOperation({ summary: 'Создать комментарий к публикации.' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: CommentRdo, description: 'Comment created' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogCommentRdo, description: 'Comment created' })
   public async create(
     @Param('postId') postId: string,
     @Body() dto: CreateCommentDto
   ) {
     const comment = await this.blogCommentService.create(postId, dto);
-    return fillDto(CommentRdo, comment.toPOJO());
+    return fillDto(BlogCommentRdo, comment.toPOJO());
   }
 
   @Get('posts/:postId/comments')
   @ApiOperation({ summary: 'Список комментариев к публикации.' })
-  @ApiResponse({ status: HttpStatus.OK, type: [CommentRdo] })
-  public async findAll(@Param('postId') postId: string) {
-    const comments = await this.blogCommentService.findByPostId(postId);
-    return fillDto(CommentRdo, comments.map((comment) => comment.toPOJO()));
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogCommentWithPaginationRdo] })
+  public async findAll(
+    @Param('postId') postId: string,
+    @Query() query: BlogCommentQuery,
+  ) {
+    const comments = await this.blogCommentService.findByPostId(postId, query);
+    const result = {
+      ...comments,
+      entities: comments.entities.map((comment) => comment.toPOJO()),
+    }
+    return fillDto(BlogCommentWithPaginationRdo, result);
   }
 
   @Delete('comments/:id')

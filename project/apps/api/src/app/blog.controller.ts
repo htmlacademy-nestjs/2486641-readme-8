@@ -9,7 +9,7 @@ import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto, BlogP
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
-import { CommentRdo, CreateCommentDto } from '@project/blog-comment';
+import { BlogCommentRdo, BlogCommentWithPaginationRdo, CreateCommentDto } from '@project/blog-comment';
 
 @Controller('blog/posts/')
 @UseFilters(AxiosExceptionFilter)
@@ -123,7 +123,7 @@ export class BlogController {
 
   @Post('/:id/comments')
   @ApiOperation({ summary: 'Создать комментарий к публикации.' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: CommentRdo, description: 'Comment created' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogCommentRdo, description: 'Comment created' })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
@@ -137,7 +137,7 @@ export class BlogController {
 
   @Get('/:id/comments')
   @ApiOperation({ summary: 'Список комментариев к публикации.' })
-  @ApiResponse({ status: HttpStatus.OK, type: [CommentRdo] })
+  @ApiResponse({ status: HttpStatus.OK, type: BlogCommentWithPaginationRdo })
   public async findComments(@Param('id') postId: string) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/${postId}/comments`);
     return data;
