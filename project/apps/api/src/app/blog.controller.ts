@@ -109,6 +109,14 @@ export class BlogController {
     return data;
   }
 
+  @Get('/send')
+  @ApiOperation({ summary: 'Отправка уведомлений о новых публикациях.' })
+  @ApiResponse({ status: HttpStatus.OK })
+  public async send() {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/send`);
+    return data;
+  }
+
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()

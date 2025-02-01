@@ -64,12 +64,16 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit ? query?.limit : undefined;
     const where: Prisma.PostWhereInput = { isPublished: true };
-    const orderBy: Prisma.PostOrderByWithRelationInput =
-      (query.sortField === SortField.CommentsCount)
-        ? { comments: { _count: query.sortDirection } }
-        : (query.sortField === SortField.LikesCount)
-          ? { likes: { _count: query.sortDirection } }
-          : { postDate: query.sortDirection };
+    let orderBy: Prisma.PostOrderByWithRelationInput = {};
+    if (query.sortField === SortField.CommentsCount) {
+      orderBy = { comments: { _count: query.sortDirection } };
+    }
+    if (query.sortField === SortField.LikesCount) {
+      orderBy = { likes: { _count: query.sortDirection } };
+    }
+    if (query.sortField === SortField.PostDate) {
+      orderBy = { postDate: query.sortDirection };
+    }
 
     if (query?.tag) {
       where.tags = {

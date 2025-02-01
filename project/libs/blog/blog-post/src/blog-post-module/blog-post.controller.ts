@@ -54,6 +54,8 @@ export class BlogPostController {
   }
 
   @Get('/send')
+  @ApiOperation({ summary: 'Отправка уведомлений о новых публикациях.' })
+  @ApiResponse({ status: HttpStatus.OK })
   public async send() {
     return this.blogPostService.sendPosts();
   }

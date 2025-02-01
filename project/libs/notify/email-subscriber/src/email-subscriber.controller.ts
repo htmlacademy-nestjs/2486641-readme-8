@@ -31,9 +31,8 @@ export class EmailSubscriberController {
     routingKey: RabbitRouting.SendNewPosts,
     queue: 'readme.notify.posts',
   })
-  public async test(dto: CreatePostMailDto[]) {
-    console.log('controller test');
+  public async sendNotify(dto: CreatePostMailDto[]) {
     const subscribers = await this.subscriberService.getAllSubscribers();
-    await this.mailService.test(dto, subscribers);
+    await this.mailService.sendNotify(dto, subscribers);
   }
 } 
