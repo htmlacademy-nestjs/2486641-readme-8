@@ -25,6 +25,14 @@ export class BlogPostController {
     private readonly blogPostService: BlogPostService,
   ) {}
 
+  @Get('/search')
+  @ApiOperation({ summary: 'Поиск публикаций.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogPostRdo] })
+  public async search(@Query('title') searchString: string) {
+    const posts = await this.blogPostService.search(searchString);
+    return fillDto(BlogPostRdo, posts);
+  }
+  
   @Get('/drafts')
   @ApiOperation({ summary: 'Получение списка своих черновиков.' })
   @ApiResponse({ status: HttpStatus.OK, type: [BlogPostRdo] })

@@ -5,3 +5,6 @@ GET http://localhost:3000/api/posts/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.
 
 ###
 GET http://localhost:3000/api/posts/send
+
+###
+GET http://localhost:3334/api/posts/search?title=text HTTP/1.1

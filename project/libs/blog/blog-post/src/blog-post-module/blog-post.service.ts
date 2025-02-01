@@ -78,4 +78,7 @@ export class BlogPostService {
     return await this.blogPostRepository.getDrafts(userId);
   }
 
+  public async search(searchString: string): Promise<BlogPostEntity[]> {
+    return this.blogPostRepository.search(searchString);
+  }
 }

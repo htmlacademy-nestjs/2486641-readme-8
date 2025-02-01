@@ -134,4 +134,24 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
       likesCount: document._count.likes
     }));
   }
+
+  public async search(searchString: string): Promise<BlogPostEntity[]> {
+    const where: Prisma.PostWhereInput = { 
+      OR: [
+        { titleText: { contains: searchString, mode: 'insensitive' } }, 
+        { titleVideo: { contains: searchString, mode: 'insensitive' } }
+      ] 
+    };
+    const documents = await this.client.post.findMany({
+      where,
+      include: { _count: { select: { comments: true, likes: true } } },
+      take: 20
+    });
+    return documents.map((document) => this.createEntityFromDocument({
+      ...document,
+      type: document.type as PostType,
+      commentsCount: document._count.comments,
+      likesCount: document._count.likes
+    }));
+  }
 }

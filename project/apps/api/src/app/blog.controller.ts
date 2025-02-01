@@ -22,6 +22,14 @@ export class BlogController {
     private readonly appService: AppService,
   ) { }
 
+  @Get('/search')
+  @ApiOperation({ summary: 'Поиск публикаций.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogPostRdo] })
+  public async search(@Query('title') searchString: string) {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/search`, { params: { title: searchString } });
+    return data;
+  }
+
   @Get('/drafts')
   @ApiBearerAuth()
   @UseGuards(CheckAuthGuard)
