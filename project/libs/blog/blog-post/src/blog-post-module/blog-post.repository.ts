@@ -70,13 +70,13 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
         : (query.sortField === SortField.LikesCount)
           ? { likes: { _count: query.sortDirection } }
           : { postDate: query.sortDirection };
-    
-    if (query?.tags) {
+
+    if (query?.tag) {
       where.tags = {
-        hasSome: query.tags
+        has: query.tag
       }
     }
-    
+
     if (query?.userId) {
       where.userId = {
         equals: query?.userId
@@ -119,5 +119,15 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     const documents = await this.client.post.findMany({ where: { isSent: false } });
     await this.client.post.updateMany({ data: { isSent: true } });
     return documents.map((document) => this.createEntityFromDocument({ ...document, type: document.type as PostType }));
+  }
+
+  public async getDrafts(userId: string) {
+    const documents = await this.client.post.findMany({ where: { userId, isPublished: false }, include: { _count: { select: { comments: true, likes: true } } }, })
+    return documents.map((document) => this.createEntityFromDocument({
+      ...document,
+      type: document.type as PostType,
+      commentsCount: document._count.comments,
+      likesCount: document._count.likes
+    }));
   }
 }

@@ -1,8 +1,8 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { BlogPostRdo } from "@project/blog-post";
 import { ApplicationServiceURL } from "./app.config";
 import { AuthorRdo } from "./rdo/author.rdo";
+import { Post } from "@project/core";
 
 @Injectable()
 export class AppService {
@@ -10,7 +10,7 @@ export class AppService {
       private readonly httpService: HttpService,
     ) { }
   
-  public async appendUser(posts: BlogPostRdo[]): Promise<void> {
+  public async appendUser(posts: Post[]): Promise<void> {
     const usersIds = posts.map((post) => post.userId);
     const uniqUserIds = new Set(usersIds);
 

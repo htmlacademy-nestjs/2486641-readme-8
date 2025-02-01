@@ -36,6 +36,8 @@ export class BlogPostService {
     if (post.userId !== userId) {
       throw new HttpException('Запрещено редактировать чужие посты', HttpStatus.BAD_REQUEST);
     }
+    delete post.commentsCount;
+    delete post.likesCount;
     const entity = new BlogPostEntity(Object.assign(post, dto));
     return await this.blogPostRepository.update(entity);
   }
@@ -71,4 +73,9 @@ export class BlogPostService {
     await this.blogPostRepository.save(newRepost);
     return newRepost;
   }
+
+  public async getDrafts(userId: string) {
+    return await this.blogPostRepository.getDrafts(userId);
+  }
+
 }

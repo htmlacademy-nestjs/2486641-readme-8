@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsArray, IsEnum, IsMongoId, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsMongoId, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { PostType, SortDirection } from '@project/core';
 
@@ -20,11 +20,10 @@ export class BlogPostQuery {
   @IsOptional()
   readonly limit?: number = DEFAULT_POST_COUNT_LIMIT;
 
-  @ApiProperty({ description: 'Тэги', required: false })
-  @IsString({ each: true })
-  @IsArray()
+  @ApiProperty({ description: 'Тэг', required: false })
+  @IsString()
   @IsOptional()
-  public tags?: string[];
+  public tag?: string;
 
   @ApiProperty({ description: 'Поле для сортировки', enum: SortField, required: false })
   @IsEnum(SortField)

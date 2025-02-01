@@ -22,6 +22,18 @@ export class BlogController {
     private readonly appService: AppService,
   ) { }
 
+  @Get('/drafts')
+  @ApiBearerAuth()
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectUserIdInterceptor)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Получение списка своих черновиков.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogPostRdo] })
+  public async getDrafts(@UserId() userId: string) {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/drafts`, { params: { userId } });
+    return data;
+  }
+
   @Get('/')
   @ApiOperation({ summary: 'Получение списка публикаций.' })
   @ApiResponse({ status: HttpStatus.OK, type: PostListRdo })

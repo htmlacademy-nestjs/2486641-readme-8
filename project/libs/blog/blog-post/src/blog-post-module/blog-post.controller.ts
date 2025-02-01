@@ -25,6 +25,14 @@ export class BlogPostController {
     private readonly blogPostService: BlogPostService,
   ) {}
 
+  @Get('/drafts')
+  @ApiOperation({ summary: 'Получение списка своих черновиков.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogPostRdo] })
+  public async getDrafts(@Query('userId') userId: string,) {
+    const drafts = await this.blogPostService.getDrafts(userId);
+    return fillDto(BlogPostRdo, drafts);
+  }
+
   @Post('/')
   @ApiOperation({ summary: 'Создание новой публикации.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })

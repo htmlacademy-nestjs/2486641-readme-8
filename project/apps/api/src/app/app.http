@@ -39,16 +39,11 @@ Content-Type: application/json
 
 ###
 # Update post
-PATCH http://localhost:3000/api/blog/1e3cb76b-8ec4-4d23-b930-c186d6fb2d1c HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc3NzE1MiwiZXhwIjoxNzM3Nzc3NDUyfQ.7HAJFDIzUHkaYT8vIpOpHejVSUqA-df_XWNC8bLxSKU
+PATCH http://localhost:3000/api/blog/posts/bc6fbf99-efd4-4031-912e-abe8f4638d48 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODQyNDY4NywiZXhwIjoxNzM4NDI2NDg3fQ.DE3mSeVgNmxHy04sS6t2JL9QY5fUVXJcMFHwMX2BKD0
 Content-Type: application/json
 
 {
-  "tags": ["tag1", "tag2"],
-  "postDate": "2025-01-30T17:37:50.831Z",
-  "isPublished": false,
-  "likes": [],
-  "comments": [],
-  "urlLink": "https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme"
+  "isPublished": true
 }
 ###
