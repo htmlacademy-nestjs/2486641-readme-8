@@ -30,10 +30,10 @@ export class UsersController {
   })
   @Get(':id')
   public async getById(@Param('id') id: string): Promise<UserRdo> {
-    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Users}/${id}`);
+    const data: UserRdo = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Users}/${id}`)).data;
     const posts: PaginationResult<BlogPost> = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}`, { params: { userId: id } })).data;
-    data['countPosts'] = posts.totalItems;
-    data['countSubscribers'] = 0;
+    data.countPosts = posts.totalItems;
+    data.countSubscribers = 0;
     return data;
   }
 

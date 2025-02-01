@@ -10,6 +10,8 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { BlogCommentRdo, BlogCommentWithPaginationRdo, CreateCommentDto } from '@project/blog-comment';
+import { PostListRdo } from './rdo/post-list.rdo';
+import { AppService } from './app.service';
 
 @Controller('blog/posts/')
 @UseFilters(AxiosExceptionFilter)
@@ -17,14 +19,16 @@ export class BlogController {
 
   constructor(
     private readonly httpService: HttpService,
+    private readonly appService: AppService,
   ) { }
 
   @Get('/')
   @ApiOperation({ summary: 'Получение списка публикаций.' })
-  @ApiResponse({ status: HttpStatus.OK, type: BlogPostWithPaginationRdo })
+  @ApiResponse({ status: HttpStatus.OK, type: PostListRdo })
   public async getAll(@Query() params: BlogPostQuery) {
-    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/`, { params });
-    return data;
+    const postsWithPagination: BlogPostWithPaginationRdo = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Blog}/`, { params })).data;
+    await this.appService.appendUser(postsWithPagination.entities);
+    return postsWithPagination;
   }
 
   @Get('/:id')

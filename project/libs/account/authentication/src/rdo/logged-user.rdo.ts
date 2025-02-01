@@ -1,20 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { AuthFieldDescription } from '../authentication-module/authentication.constant';
 
 export class LoggedUserRdo {
-  @ApiProperty({ description: 'User uniq ID', example: '1ae640b4-cd54-40ff-959c-96fc3fd2623c' })
+  @ApiProperty(AuthFieldDescription.id)
   @Expose()
   public id: string;
 
-  @ApiProperty({ description: 'User email', example: 'example@email.com' })
+  @ApiProperty(AuthFieldDescription.email)
   @Expose()
   public email: string;
 
-  @ApiProperty({ description: 'Access token', example: 'example@email.com' })
+  @ApiProperty(AuthFieldDescription.accessToken)
   @Expose()
   public accessToken: string;
 
-  @ApiProperty({ description: 'Refresh token' })
+  @ApiProperty(AuthFieldDescription.refreshToken)
   @Expose()
   public refreshToken: string;
 }

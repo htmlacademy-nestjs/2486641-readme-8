@@ -27,3 +27,17 @@ export const AuthenticationValidateMessage = {
   Password: `Min length for password is ${AuthValidateValue.password.minLength}, max is ${AuthValidateValue.password.maxLength}`,
   Name: `Min length for name is ${AuthValidateValue.name.minLength}, max is ${AuthValidateValue.name.maxLength}`,
 } as const;
+
+export const AuthFieldDescription = {
+  id: { description: 'Уникальный идентификатор пользователя', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  name: { description: 'Имя пользователя', example: 'Ivanov Ivan' },
+  email: { description: 'Электронная почта пользователя', example: 'example@email.com' },
+  createdAt: { description: 'Дата регистрации', example: new Date() },
+  countPosts: { description: 'Количество публикаций пользователя', example: 77 },
+  countSubscribers: { description: 'Количество подписчиков пользователя', example: 0 },
+  accessToken: { description: 'Access token' },
+  refreshToken: { description: 'Refresh token' },
+  currentPassword: { description: 'Текущий пароль', example: 'Pa$$w0rD' },
+  newPassword: { description: 'Новый пароль', example: 'New_Pa$$w0rD' },
+  password: { description: 'Пароль', example: 'Pa$$w0rD' },
+} as const;
