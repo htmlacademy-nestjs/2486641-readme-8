@@ -78,7 +78,7 @@ export class BlogController {
   @UseInterceptors(InjectUserIdInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Редактирование публикации.' })
-  @ApiResponse({ status: HttpStatus.CREATED })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   @Patch('/:id')
   public async update(
     @Param('id') id: string,

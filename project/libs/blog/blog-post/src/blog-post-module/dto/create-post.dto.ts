@@ -34,7 +34,7 @@ export class CreatePostDto {
   @TagsArray()
   tags?: string[];
 
-  @ApiProperty(PostFieldDescription.userId)
+  //@ApiProperty(PostFieldDescription.userId)
   @IsMongoId()
   userId: string;
 

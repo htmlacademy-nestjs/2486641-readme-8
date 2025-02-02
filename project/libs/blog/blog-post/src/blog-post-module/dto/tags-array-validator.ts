@@ -2,7 +2,6 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
@@ -10,7 +9,7 @@ import { PostValidateMessage } from '../blog-post.constant';
 
 @ValidatorConstraint({ name: 'tagsArray', async: false })
 export class TagsArrayValidator implements ValidatorConstraintInterface {
-  validate(value: [string], args: ValidationArguments) {
+  validate(value: [string]) {
     for (const item of value) {
       const tag = item.toLowerCase();
 

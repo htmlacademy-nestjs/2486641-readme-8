@@ -1,4 +1,4 @@
-import { EntityFactory, Post } from "@project/core";
+import { EntityFactory, Post, PostType } from "@project/core";
 import { Injectable } from "@nestjs/common";
 import { BlogPostEntity } from "./blog-post.entity";
 
@@ -21,5 +21,82 @@ export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
     postData.updatedAt = undefined;
     const newPost = new BlogPostEntity(postData);
     return newPost;
+  }
+
+  public static prepareUpdatePost(postEntity: BlogPostEntity): void {
+    delete postEntity.commentsCount;
+    delete postEntity.likesCount;
+    delete postEntity.createdAt;
+    delete postEntity.updatedAt;
+    if (postEntity.type === PostType.text) {
+      // video  
+      postEntity.titleVideo = null;
+      postEntity.urlVideo = null;
+      // quote
+      postEntity.textQuote = null;
+      postEntity.authorQuote = null;
+      // photo
+      postEntity.urlPhoto = null;
+      // link
+      postEntity.urlLink = null;
+      postEntity.descriptionLink = null;
+    }
+    if (postEntity.type === PostType.link) {
+      // video  
+      postEntity.titleVideo = null;
+      postEntity.urlVideo = null;
+      // text
+      postEntity.titleText = null;
+      postEntity.previewText = null;
+      postEntity.text = null;
+      // quote
+      postEntity.textQuote = null;
+      postEntity.authorQuote = null;
+      // photo
+      postEntity.urlPhoto = null;
+    }
+    if (postEntity.type === PostType.photo) {
+      // video  
+      postEntity.titleVideo = null;
+      postEntity.urlVideo = null;
+      // text
+      postEntity.titleText = null;
+      postEntity.previewText = null;
+      postEntity.text = null;
+      // quote
+      postEntity.textQuote = null;
+      postEntity.authorQuote = null;
+      // link
+      postEntity.urlLink = null;
+      postEntity.descriptionLink = null;
+    }
+    if (postEntity.type === PostType.quote) {
+      // video  
+      postEntity.titleVideo = null;
+      postEntity.urlVideo = null;
+      // text
+      postEntity.titleText = null;
+      postEntity.previewText = null;
+      postEntity.text = null;
+      // photo
+      postEntity.urlPhoto = null;
+      // link
+      postEntity.urlLink = null;
+      postEntity.descriptionLink = null;
+    }
+    if (postEntity.type === PostType.video) {
+      // quote
+      postEntity.textQuote = null;
+      postEntity.authorQuote = null;
+      // text
+      postEntity.titleText = null;
+      postEntity.previewText = null;
+      postEntity.text = null;
+      // photo
+      postEntity.urlPhoto = null;
+      // link
+      postEntity.urlLink = null;
+      postEntity.descriptionLink = null;
+    }
   }
 }

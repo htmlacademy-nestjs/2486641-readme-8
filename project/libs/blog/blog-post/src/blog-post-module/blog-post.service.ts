@@ -31,15 +31,15 @@ export class BlogPostService {
     return await this.blogPostRepository.findById(id);
   }
 
-  public async update(id: string, userId: string, dto: UpdatePostDto) {
+  public async update(id: string, userId: string, dto: UpdatePostDto): Promise<BlogPostEntity> {
     const post = await this.findById(id);
     if (post.userId !== userId) {
       throw new HttpException('Запрещено редактировать чужие посты', HttpStatus.BAD_REQUEST);
     }
-    delete post.commentsCount;
-    delete post.likesCount;
     const entity = new BlogPostEntity(Object.assign(post, dto));
-    return await this.blogPostRepository.update(entity);
+    BlogPostFactory.prepareUpdatePost(entity);
+    await this.blogPostRepository.update(entity);
+    return entity;
   }
 
   public async remove(id: string, userId: string): Promise<void> {

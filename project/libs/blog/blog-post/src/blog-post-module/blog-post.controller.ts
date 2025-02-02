@@ -78,13 +78,14 @@ export class BlogPostController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Редактирование публикации.' })
-  @ApiResponse({ status: HttpStatus.CREATED })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
   public async update(
     @Param('id') id: string,
     @Query('userId') userId: string,
     @Body() dto: UpdatePostDto
   ) {
-    return this.blogPostService.update(id, userId, dto);
+    const post = await this.blogPostService.update(id, userId, dto);
+    return fillDto(BlogPostRdo, post);
   }
 
   @Delete(':id')

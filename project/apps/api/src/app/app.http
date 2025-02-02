@@ -16,13 +16,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2Z
 ###
 
 # Create a new post
-POST http://localhost:3000/api/blog HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczNzc0MDAxNiwiZXhwIjoxNzM3NzQwMzE2fQ.2-uvPeQp05abW0l_Xyb4AJZRKvFz9G-ZcPYPQLhgPQo
+POST http://localhost:3000/api/blog/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk3MGM2ZTk1NWNlY2NmNmFiYjQyZTgiLCJlbWFpbCI6ImV4YW1wbGVAZW1haWwuY29tIiwibmFtZSI6Ikl2YW5vdiBJdmFuIiwiaWF0IjoxNzM4NTA1OTEyLCJleHAiOjE3Mzg1MDc3MTJ9.aKhWlIKsK-qHri0S6cPBEvLifZvH_EWTT7YYARxbu_U
 Content-Type: application/json
 
 {
-  "type": "link",
-  "urlLink": "https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme"
+  "type": "text",
+  "tags": [
+    "tag1",
+    "tag2",
+    "tag3",
+    "tag4",
+    "tag5",
+    "tag6",
+    "tag7",
+    "tag8"
+  ],
+  "postDate": "2025-10-02T11:30:23.492Z",
+  "isPublished": false,
+  "isReposted": false,
+  "titleVideo": "Моя видео публикация",
+  "urlVideo": "https://my-videos.com/example-video"
 }
 ###
 
@@ -39,11 +53,33 @@ Content-Type: application/json
 
 ###
 # Update post
-PATCH http://localhost:3000/api/blog/posts/bc6fbf99-efd4-4031-912e-abe8f4638d48 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzY2ZTE2ZjkwYzAyNjRhNzRhMWY5ZDQiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODQyNDY4NywiZXhwIjoxNzM4NDI2NDg3fQ.DE3mSeVgNmxHy04sS6t2JL9QY5fUVXJcMFHwMX2BKD0
+PATCH http://localhost:3000/api/blog/posts/1c209ccc-3f6f-49a5-acc1-8117a64e0afe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk3MGM2ZTk1NWNlY2NmNmFiYjQyZTgiLCJlbWFpbCI6ImV4YW1wbGVAZW1haWwuY29tIiwibmFtZSI6Ikl2YW5vdiBJdmFuIiwiaWF0IjoxNzM4NTA1OTEyLCJleHAiOjE3Mzg1MDc3MTJ9.aKhWlIKsK-qHri0S6cPBEvLifZvH_EWTT7YYARxbu_U
+Content-Type: application/json
+
+{
+  //"type": "video",
+  "tags": [
+    "Supertag1",
+    "SUper_tag2",
+    "tag3",
+    "tag4",
+    "tag5",
+    "tag6",
+    "tag7",
+    "tag8"
+  ],
+  "postDate": "2025-10-02T11:30:23.492Z",
+  "isPublished": false,
+  "titleVideo": "Моя видео публикация",
+  "urlVideo": "https://my-videos.com/example-video"
+}
+###
+
+PATCH http://localhost:3000/api/blog/posts/1c209ccc-3f6f-49a5-acc1-8117a64e0afe HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk3MGM2ZTk1NWNlY2NmNmFiYjQyZTgiLCJlbWFpbCI6ImV4YW1wbGVAZW1haWwuY29tIiwibmFtZSI6Ikl2YW5vdiBJdmFuIiwiaWF0IjoxNzM4NTA5ODk4LCJleHAiOjE3Mzg1MTE2OTh9.GKwAQthMPWuWbw-Es8PnCT4dke6hjTWe8aByNAfoWuE
 Content-Type: application/json
 
 {
   "isPublished": true
 }
-###
