@@ -54,6 +54,8 @@ export const PostValidateMessage = {
   tags: {
     lengthMessage: `min length for tag is ${PostValidateValue.tags.minLength}, max is ${PostValidateValue.tags.maxLength}`,
     countMessage: `max count of tags is ${PostValidateValue.tags.maxCount}`,
+    spaceMessage: `must not contain a space`,
+    firstSymbolMessage: `must start with a letter`
   },
   descriptionLink: {
     lengthMessage: `max length for description link is ${PostValidateValue.descriptionLink.maxLength}`,

@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { PostType } from "@project/core";
 import { ArrayMaxSize, IsArray, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
 import { PostFieldDescription, PostValidateMessage, PostValidateValue } from "../blog-post.constant";
+import { TagsArray } from "./tags-array-validator";
 
 export class CreatePostDto {
   @ApiProperty(PostFieldDescription.type)
@@ -25,20 +26,12 @@ export class CreatePostDto {
       message: PostValidateMessage.tags.lengthMessage
     }
   )
+  @TagsArray()
   tags?: string[];
 
   @ApiProperty(PostFieldDescription.userId)
   @IsMongoId()
   userId: string;
-
-  // @ApiProperty({ description: 'Дата публикации' })
-  // @IsDateString()
-  // @IsOptional()
-  // postDate?: Date;
-
-  // @ApiProperty({ description: 'Признак "опубликована"', example: 'true' })
-  // @IsBoolean({ message: PostValidateMessage.isPublished.formatMessage })
-  // isPublished: boolean;
 
   @ApiProperty(PostFieldDescription.titleVideo)
   @ValidateIf((o) => o.type === PostType.video)
