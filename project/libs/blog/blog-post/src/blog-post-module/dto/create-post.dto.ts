@@ -3,6 +3,7 @@ import { PostType } from "@project/core";
 import { ArrayMaxSize, IsArray, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
 import { PostFieldDescription, PostValidateMessage, PostValidateValue } from "../blog-post.constant";
 import { TagsArray } from "./tags-array-validator";
+import { Transform } from "class-transformer";
 
 export class CreatePostDto {
   @ApiProperty(PostFieldDescription.type)
@@ -26,6 +27,10 @@ export class CreatePostDto {
       message: PostValidateMessage.tags.lengthMessage
     }
   )
+  @Transform(({ value }) => {
+    const uniq: Set<string> = new Set(value);
+    return Array.from(uniq).map((item) => item.toLowerCase());
+  }) 
   @TagsArray()
   tags?: string[];
 

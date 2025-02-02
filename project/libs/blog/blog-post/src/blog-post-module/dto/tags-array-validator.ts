@@ -11,37 +11,34 @@ import { PostValidateMessage } from '../blog-post.constant';
 @ValidatorConstraint({ name: 'tagsArray', async: false })
 export class TagsArrayValidator implements ValidatorConstraintInterface {
   validate(value: [string], args: ValidationArguments) {
-    const uniqueTags = new Set<string>();
     for (const item of value) {
       const tag = item.toLowerCase();
 
       if (tag.includes(' ')) {
         throw new HttpException(
-          PostValidateMessage.tags.spaceMessage, 
+          PostValidateMessage.tags.spaceMessage,
           HttpStatus.BAD_REQUEST);
       }
 
       if (!/^[a-z]/.test(tag)) {
         throw new HttpException(
-          PostValidateMessage.tags.firstSymbolMessage, 
+          PostValidateMessage.tags.firstSymbolMessage,
           HttpStatus.BAD_REQUEST);
       }
-
-      uniqueTags.add(tag);
     }
-    
-    return uniqueTags.size === value.length
+
+    return true;
   }
 }
 
 export function TagsArray(validationOptions?: ValidationOptions) {
-    return function (object: Object, propertyName: string) {
-        registerDecorator({
-            target: object.constructor,
-            propertyName: propertyName,
-            options: validationOptions,
-            constraints: [],
-            validator: TagsArrayValidator,
-        });
-    };
+  return function (object: object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: TagsArrayValidator,
+    });
+  };
 }
