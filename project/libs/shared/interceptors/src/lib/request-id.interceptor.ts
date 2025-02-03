@@ -1,5 +1,4 @@
 import * as crypto from 'crypto';
-import { Observable } from 'rxjs';
 import {
   CallHandler,
   ExecutionContext,
@@ -8,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 export class RequestIdInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler) {
     const requestId = crypto.randomUUID();
 
     const request = context.switchToHttp().getRequest<Request>();

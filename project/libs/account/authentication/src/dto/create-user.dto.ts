@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString, Length } from "class-validator";
+import { IsEmail, IsOptional, IsString, Length } from "class-validator";
 import { AuthenticationValidateMessage, AuthFieldDescription, AuthValidateValue } from "../authentication-module/authentication.constant";
-
+import 'multer';
 export class CreateUserDto {
   @ApiProperty(AuthFieldDescription.email)
   @IsEmail({}, { message: AuthenticationValidateMessage.Email })
@@ -24,4 +24,8 @@ export class CreateUserDto {
   )
   @IsString()
   public password: string;
+
+  @ApiProperty(AuthFieldDescription.avatar)
+  @IsOptional()
+  public avatar?: string;
 }

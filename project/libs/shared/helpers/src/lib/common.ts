@@ -1,3 +1,4 @@
+import { File } from '@project/core';
 import { ClassTransformOptions, plainToInstance } from 'class-transformer';
 
 export type DateTimeUnit = 's' | 'h' | 'd' | 'm' | 'y';
@@ -51,4 +52,9 @@ export function parseTime(time: string): TimeAndUnit {
   }
 
   return { value, unit }
+}
+
+export function createUrlForFile(fileMetaData: File, host: string): string {
+  const subDirectory = fileMetaData.subDirectory.replace('\\', '/');
+  return `${host}/static/${subDirectory}/${fileMetaData.hashName}`;
 }

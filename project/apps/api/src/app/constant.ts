@@ -3,3 +3,8 @@ export const AuthorFieldDescription = {
   name: { description: 'Имя автора публикации', example: 'Ivanov Ivan' },
   email: { description: 'Электронная почта автора публикации', example: 'example@email.com' },
 } as const;
+
+export const AvatarParams = {
+  maxSize: 500000,
+  fileType: /(jpg|jpeg|png)$/,
+} as const;

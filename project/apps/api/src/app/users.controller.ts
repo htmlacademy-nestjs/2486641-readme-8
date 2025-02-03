@@ -1,22 +1,28 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
-
+import { Body, Controller, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import 'multer';
 import { AuthenticationResponseMessage, ChangePasswordDto, CreateUserDto, LoggedUserRdo, LoginUserDto, UserRdo } from '@project/authentication';
 
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CheckAnonymousGuard } from './guards/check-anonymous.guard';
 import { CheckAuthGuard } from './guards/check-auth.guard';
-import { InjectUserIdInterceptor } from '@project/interceptors';
+import { InjectUserIdInterceptor, ParseJsonBodyInterceptor } from '@project/interceptors';
 import { PaginationResult, Post as BlogPost } from '@project/core';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AvatarParams } from './constant';
+import { AppService } from './app.service';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
 export class UsersController {
   constructor(
-    private readonly httpService: HttpService
-  ) {}
+    private readonly httpService: HttpService,
+    private readonly appService: AppService,
+  ) { }
 
   @ApiOperation({ summary: 'Получение детальной информации о пользователе.' })
   @ApiResponse({
@@ -37,6 +43,7 @@ export class UsersController {
     return data;
   }
 
+  @Post('register')
   @ApiOperation({ summary: 'Регистрация пользователя.' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -45,17 +52,30 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CONFLICT,
     description: AuthenticationResponseMessage.UserExist,
-  })  
+  })
   @ApiBearerAuth()
   @UseGuards(CheckAnonymousGuard)
-  @Post('register')
+  @UseInterceptors(new ParseJsonBodyInterceptor())
+  @UseInterceptors(FileInterceptor('avatar'))
+  @ApiConsumes('multipart/form-data')
   public async create(
-    @Body() dto: CreateUserDto
+    @Body() dto: RegisterUserDto,
+    @UploadedFile(new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: AvatarParams.maxSize }),
+        new FileTypeValidator({ fileType: AvatarParams.fileType }),
+      ],
+      fileIsRequired: false,
+    }),) avatar?: Express.Multer.File
   ) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/register`, dto);
+    const newUser = plainToInstance(CreateUserDto, dto);
+    if (avatar) {
+      newUser.avatar = await this.appService.uploadFile(avatar);
+    }
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/register`, newUser);
     return data;
   }
-  
+
   @ApiOperation({ summary: 'Смена пароля пользователя.' })
   @ApiResponse({
     type: UserRdo,

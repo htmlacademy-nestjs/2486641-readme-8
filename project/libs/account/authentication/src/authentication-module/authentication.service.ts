@@ -25,10 +25,10 @@ export class AuthenticationService {
   ) { }
 
   public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
-    const { email, name, password } = dto;
+    const { email, name, password, avatar } = dto;
 
     const blogUser = {
-      email, name, avatar: '', passwordHash: ''
+      email, name, avatar, passwordHash: ''
     };
 
     const existUser = await this.blogUserRepository

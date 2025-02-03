@@ -40,4 +40,5 @@ export const AuthFieldDescription = {
   currentPassword: { description: 'Текущий пароль', example: 'Pa$$w0rD' },
   newPassword: { description: 'Новый пароль', example: 'New_Pa$$w0rD' },
   password: { description: 'Пароль', example: 'Pa$$w0rD' },
+  avatar: { description: 'Ссылка на аватар пользователя' },
 } as const;
