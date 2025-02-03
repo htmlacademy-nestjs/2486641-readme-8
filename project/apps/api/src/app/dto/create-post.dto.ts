@@ -1,4 +1,16 @@
 import { CreatePostDto as CreateBlogPostDto } from '@project/blog-post';
-import { OmitType } from "@nestjs/swagger";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
+import { IsNotEmpty, ValidateIf } from 'class-validator';
+import { PostType } from '@project/core';
 
-export class CreatePostDto extends OmitType(CreateBlogPostDto, ['userId'] as const) {}
+export class CreatePostDto extends OmitType(CreateBlogPostDto, ['userId', 'urlPhoto'] as const) {
+    @ApiProperty({ 
+      description: 'Photo', 
+      type: 'string',
+      format: 'binary',
+      required: false
+    })
+    @ValidateIf((o) => o.type === PostType.photo)
+    @IsNotEmpty()
+    public photo?: Express.Multer.File;
+}

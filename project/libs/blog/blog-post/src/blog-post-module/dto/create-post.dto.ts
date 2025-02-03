@@ -1,17 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { PostType } from "@project/core";
-import { ArrayMaxSize, IsArray, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
+import { ArrayMaxSize, IsArray, IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
 import { PostFieldDescription, PostValidateMessage, PostValidateValue } from "../blog-post.constant";
 import { TagsArray } from "./tags-array-validator";
 import { Transform } from "class-transformer";
 
 export class CreatePostDto {
   @ApiProperty(PostFieldDescription.type)
-  @IsIn(Object.values(PostType))
+  @IsEnum(PostType)
   @IsNotEmpty()
   type: PostType;
 
-  @ApiProperty(PostFieldDescription.tags)
+  @ApiProperty({...PostFieldDescription.tags, type: 'array'})
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
@@ -28,13 +28,18 @@ export class CreatePostDto {
     }
   )
   @Transform(({ value }) => {
-    const uniq: Set<string> = new Set(value);
+    let tags: string[];
+    if ((typeof value) === 'string') {
+      tags = value.split(',');
+    } else {
+      tags = value;
+    }
+    const uniq: Set<string> = new Set(tags);
     return Array.from(uniq).map((item) => item.toLowerCase());
   }) 
   @TagsArray()
   tags?: string[];
 
-  //@ApiProperty(PostFieldDescription.userId)
   @IsMongoId()
   userId: string;
 
@@ -103,7 +108,7 @@ export class CreatePostDto {
 
   @ApiProperty(PostFieldDescription.urlPhoto)
   @ValidateIf((o) => o.type === PostType.photo)
-  @IsUrl()
+  @IsString()
   urlPhoto?: string;
 
   @ApiProperty(PostFieldDescription.urlLink)

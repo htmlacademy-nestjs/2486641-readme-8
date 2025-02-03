@@ -1,17 +1,20 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, Query, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { ApplicationServiceURL } from './app.config';
-import { InjectUserIdInterceptor } from '@project/interceptors';
+import { InjectUserIdInterceptor, ParseJsonBodyInterceptor } from '@project/interceptors';
 import { BlogPostQuery, UpdatePostDto, CreatePostDto as CreateBlogPostDto, BlogPostRdo, BlogPostWithPaginationRdo } from '@project/blog-post';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserId } from './decorators/user-id.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { BlogCommentRdo, BlogCommentWithPaginationRdo, CreateCommentDto } from '@project/blog-comment';
 import { PostListRdo } from './rdo/post-list.rdo';
 import { AppService } from './app.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { PhotoParams } from './constant';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('blog/posts/')
 @UseFilters(AxiosExceptionFilter)
@@ -64,13 +67,28 @@ export class BlogController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Создание новой публикации.' })
   @ApiResponse({ status: HttpStatus.CREATED, type: BlogPostRdo })
+  @UseInterceptors(new ParseJsonBodyInterceptor())
+  @UseInterceptors(FileInterceptor('photo'))
+  @ApiConsumes('multipart/form-data')
   @Post('/')
   public async create(
     @Body() dto: CreatePostDto,
-    @UserId() userId: string
+    @UserId() userId: string,
+    @UploadedFile(new ParseFilePipe({
+          validators: [
+            new MaxFileSizeValidator({ maxSize: PhotoParams.maxSize }),
+            new FileTypeValidator({ fileType: PhotoParams.fileType }),
+          ],
+          fileIsRequired: false,
+        }),) photo?: Express.Multer.File
   ) {
-    const postData: CreateBlogPostDto = { ...dto, userId };
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, postData);
+    const newPost = plainToInstance(CreateBlogPostDto, dto);
+    if (photo) {
+      newPost.urlPhoto = await this.appService.uploadFile(photo);
+    }
+    newPost.userId = userId;
+    //const postData: CreateBlogPostDto = { ...dto, userId };
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, newPost);
     return data;
   }
 

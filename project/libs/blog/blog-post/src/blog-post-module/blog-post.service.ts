@@ -4,7 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostQuery } from './blog-post.query';
-import { PaginationResult, Post } from '@project/core';
+import { PaginationResult } from '@project/core';
 import { NotifyService } from '@project/blog-notify';
 import { BlogPostFactory } from './blog-post.factory';
 
@@ -16,10 +16,9 @@ export class BlogPostService {
   ) { }
 
   public async create(dto: CreatePostDto): Promise<BlogPostEntity> {
-    const postData: Post = { ...dto, isPublished: true, postDate: new Date(), isReposted: false };
-    const newPost = new BlogPostEntity(postData);
+    const newPost = BlogPostFactory.createFromCreateDto(dto);
+    BlogPostFactory.preparePost(newPost);
     await this.blogPostRepository.save(newPost);
-    //await this.notifyService.createPostMail({ id: newPost.id, postDate: newPost.postDate, type: newPost.type, userId: newPost.userId });
     return newPost;
   }
 
@@ -37,7 +36,7 @@ export class BlogPostService {
       throw new HttpException('Запрещено редактировать чужие посты', HttpStatus.BAD_REQUEST);
     }
     const entity = new BlogPostEntity(Object.assign(post, dto));
-    BlogPostFactory.prepareUpdatePost(entity);
+    BlogPostFactory.preparePost(entity);
     await this.blogPostRepository.update(entity);
     return entity;
   }

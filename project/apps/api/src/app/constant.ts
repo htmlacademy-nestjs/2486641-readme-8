@@ -8,3 +8,8 @@ export const AvatarParams = {
   maxSize: 500000,
   fileType: /(jpg|jpeg|png)$/,
 } as const;
+
+export const PhotoParams = {
+  maxSize: 1000000,
+  fileType: /(jpg|jpeg|png)$/,
+} as const;

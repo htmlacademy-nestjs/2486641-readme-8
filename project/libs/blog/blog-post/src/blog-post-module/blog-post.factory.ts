@@ -1,11 +1,16 @@
 import { EntityFactory, Post, PostType } from "@project/core";
 import { Injectable } from "@nestjs/common";
 import { BlogPostEntity } from "./blog-post.entity";
+import { CreatePostDto } from "./dto/create-post.dto";
 
 @Injectable()
 export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
   public create(entityPlainData: Post): BlogPostEntity {
     return new BlogPostEntity(entityPlainData);
+  }
+
+  public static createFromCreateDto(dto: CreatePostDto): BlogPostEntity {
+    return new BlogPostEntity({ ...dto, isPublished: true, postDate: new Date(), isReposted: false });
   }
 
   public static createRepostFromPost(postData: Post, userId: string): BlogPostEntity {
@@ -23,7 +28,7 @@ export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
     return newPost;
   }
 
-  public static prepareUpdatePost(postEntity: BlogPostEntity): void {
+  public static preparePost(postEntity: BlogPostEntity): void {
     delete postEntity.commentsCount;
     delete postEntity.likesCount;
     delete postEntity.createdAt;
