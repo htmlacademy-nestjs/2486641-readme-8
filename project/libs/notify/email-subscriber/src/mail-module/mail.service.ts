@@ -51,11 +51,9 @@ export class MailService {
     })
   }
 
-  public async test(posts: CreatePostMailDto[], subscribers: Subscriber[]) {
+  public async sendNotify(posts: CreatePostMailDto[], subscribers: Subscriber[]) {
     const html = this.getHtml(posts);
-    console.dir(subscribers);
     for (const subscriber of subscribers) {
-      console.log(subscriber.email);
       await this.mailerService.sendMail({
         from: this.notifyConfig.mail.from,
         to: subscriber.email,

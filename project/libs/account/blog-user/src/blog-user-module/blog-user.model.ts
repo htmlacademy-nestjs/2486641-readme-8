@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';import { AuthUser } from "@project/core";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { AuthUser } from "@project/core";
 
 @Schema({
   collection: 'accounts',
@@ -14,6 +15,9 @@ export class BlogUserModel extends Document implements AuthUser {
 
   @Prop({ required: true })
   public passwordHash: string;
+
+  @Prop({ required: false })
+  public avatar?: string;
 }
 
 export const BlogUserSchema = SchemaFactory.createForClass(BlogUserModel);

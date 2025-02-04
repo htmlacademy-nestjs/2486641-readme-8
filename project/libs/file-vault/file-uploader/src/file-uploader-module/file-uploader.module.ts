@@ -9,7 +9,7 @@ import { FileUploaderFactory } from './file-uploader.factory';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileModel, FileSchema } from './file.model';
 
-const SERVE_ROOT = '/static';
+//const SERVE_ROOT = '/static';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ const SERVE_ROOT = '/static';
         const rootPath = configService.get<string>('application.uploadDirectory');
         return [{
           rootPath,
-          serveRoot: SERVE_ROOT,
+          serveRoot: configService.get<string>('application.serveRoot'),
           serveStaticOptions: {
             fallthrough: true,
             etag: true,

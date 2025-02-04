@@ -1,9 +1,11 @@
 import { BasePostgresRepository } from '@project/data-access';
-import { Comment } from "@project/core";
+import { Comment, PaginationResult } from "@project/core";
 import { BlogCommentEntity } from "./blog-comment.entity";
 import { BlogCommentFactory } from './blog-comment.factory';
 import { PrismaClientService } from '@project/models';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { BlogCommentQuery } from './blog-comment.query';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BlogCommentRepository extends BasePostgresRepository<BlogCommentEntity, Comment> {
@@ -36,9 +38,21 @@ export class BlogCommentRepository extends BasePostgresRepository<BlogCommentEnt
     return this.createEntityFromDocument(document);
   }
 
-  public async findByPostId(postId: string): Promise<BlogCommentEntity[]> {
-    const records = await this.client.comment.findMany({ where: { postId } });
+  public async findByPostId(postId: string, query: BlogCommentQuery): Promise<PaginationResult<BlogCommentEntity>> {
+    const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
+    const take = query?.limit ? query?.limit : undefined;
+    const where: Prisma.CommentWhereInput = { postId };
+    const [documents, postCount] = await Promise.all([
+      this.client.comment.findMany({ where, skip, take }),
+      this.client.comment.count({where}),
+    ]);
 
-    return records.map((record) => this.createEntityFromDocument(record));
+    return {
+      entities: documents.map((document) => this.createEntityFromDocument(document)),
+      currentPage: query?.page,
+      totalPages: Math.ceil(postCount / take),
+      itemsPerPage: take,
+      totalItems: postCount,
+    };
   }
 }

@@ -23,6 +23,7 @@ model Post {
   postDate        DateTime? @map("post_date")
   isPublished     Boolean   @map("is_published")
   originalId      String?   @map("original_id")
+  isReposted      Boolean   @default(false) @map("is_reposted")
   // video  
   titleVideo      String?   @map("title_video")
   urlVideo        String?   @map("url_video")
@@ -45,8 +46,9 @@ model Post {
 
   comments       Comment[]
   likes          Like[]
-  original       Post?     @relation(name: "post_original_fk", fields: [originalId], references: [id])
   inheritedPosts Post[]    @relation(name: "post_original_fk")
+
+  original Post? @relation(name: "post_original_fk", fields: [originalId], references: [id])
 
   @@index([userId])
   @@index([postDate])
@@ -61,7 +63,7 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("comments")
 }
@@ -73,7 +75,8 @@ model Like {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("likes")
+  @@unique([postId, userId])
 }

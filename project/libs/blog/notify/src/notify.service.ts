@@ -12,20 +12,9 @@ export class NotifyService {
     private readonly rabbitClient: AmqpConnection,
     @Inject(rabbitConfig.KEY)
     private readonly rabbiOptions: ConfigType<typeof rabbitConfig>,
-  ) {}
+  ) { }
 
-  // public async createPostMail(dto: CreatePostMailDto) {
-  //   //console.dir(this.rabbiOptions);
-  //   return this.rabbitClient.publish(
-  //     this.rabbiOptions.exchange,
-  //     RabbitRouting.SendNewPosts,
-  //     { ...dto }
-  //   );
-  // }
-
-  public async sendPosts(posts: CreatePostMailDto[])
-  {
-    //console.dir(this.rabbiOptions);
+  public async sendPosts(posts: CreatePostMailDto[]) {
     return this.rabbitClient.publish(
       this.rabbiOptions.exchange,
       RabbitRouting.SendNewPosts,

@@ -7,6 +7,9 @@ import { ConfigService } from '@nestjs/config';
 import { getJwtOptions } from '@project/config';
 import { JwtAccessStrategy } from '../strategies/jwt-access.strategy';
 import { NotifyModule } from '@project/account-notify';
+import { LocalStrategy } from '../strategies/local.strategy';
+import { JwtRefreshStrategy } from '../strategies/jwt-refresh.strategy';
+import { RefreshTokenModule } from '../refresh-token-module/refresh-token.module';
 
 @Module({
   imports: [
@@ -15,12 +18,15 @@ import { NotifyModule } from '@project/account-notify';
       inject: [ConfigService],
       useFactory: getJwtOptions,
     }),
-    NotifyModule
+    NotifyModule,
+    RefreshTokenModule
   ],
   controllers: [AuthenticationController],
   providers: [
     AuthenticationService,
-    JwtAccessStrategy
+    JwtAccessStrategy,
+    LocalStrategy,
+    JwtRefreshStrategy
   ]
 })
 export class AuthenticationModule {}

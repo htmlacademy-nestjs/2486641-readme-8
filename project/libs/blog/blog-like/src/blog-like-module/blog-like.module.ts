@@ -4,9 +4,10 @@ import { BlogLikeController } from './blog-like.controller';
 import { PrismaClientModule } from '@project/models';
 import { BlogLikeRepository } from './blog-like.repository';
 import { BlogLikeFactory } from './blog-like.factory';
+import { BlogPostModule } from '@project/blog-post';
 
 @Module({
-  imports: [PrismaClientModule],
+  imports: [PrismaClientModule, BlogPostModule],
   controllers: [BlogLikeController],
   providers: [BlogLikeService, BlogLikeRepository, BlogLikeFactory],
   exports: [BlogLikeService]

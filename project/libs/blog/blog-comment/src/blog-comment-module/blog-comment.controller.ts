@@ -5,41 +5,55 @@ import {
   Body,
   Param,
   Delete,
+  HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { BlogCommentService } from './blog-comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { fillDto } from '@project/helpers';
-import { CommentRdo } from './rdo/comment.rdo';
+import { BlogCommentRdo } from './rdo/blog-comment.rdo';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BlogCommentQuery } from './blog-comment.query';
+import { BlogCommentWithPaginationRdo } from './rdo/blog-comment-with-pagination.rdo';
 
-const MOCK_USER_ID = '658170cbb954e9f5b905ccf4'; // TODO: Далее будет получаться из JWT
-
-@Controller('posts/:postId/comments')
+@ApiTags('Комментарии к публикациям')
+@Controller()
 export class BlogCommentController {
   constructor(private readonly blogCommentService: BlogCommentService) { }
 
-  @Post()
+  @Post('posts/:postId/comments')
+  @ApiOperation({ summary: 'Создать комментарий к публикации.' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: BlogCommentRdo, description: 'Comment created' })
   public async create(
     @Param('postId') postId: string,
     @Body() dto: CreateCommentDto
   ) {
-    const comment = await this.blogCommentService.create(postId, MOCK_USER_ID, dto);
-    return fillDto(CommentRdo, comment.toPOJO());
+    const comment = await this.blogCommentService.create(postId, dto);
+    return fillDto(BlogCommentRdo, comment.toPOJO());
   }
 
-  @Get()
-  public async findAll(@Param('postId') postId: string) {
-    const comments = await this.blogCommentService.findByPostId(postId);
-    return fillDto(CommentRdo, comments.map((comment) => comment.toPOJO()));
+  @Get('posts/:postId/comments')
+  @ApiOperation({ summary: 'Список комментариев к публикации.' })
+  @ApiResponse({ status: HttpStatus.OK, type: [BlogCommentWithPaginationRdo] })
+  public async findAll(
+    @Param('postId') postId: string,
+    @Query() query: BlogCommentQuery,
+  ) {
+    const comments = await this.blogCommentService.findByPostId(postId, query);
+    const result = {
+      ...comments,
+      entities: comments.entities.map((comment) => comment.toPOJO()),
+    }
+    return fillDto(BlogCommentWithPaginationRdo, result);
   }
 
-  @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    const comment = await this.blogCommentService.findById(id);
-    return fillDto(CommentRdo, comment.toPOJO());
-  }
-
-  @Delete(':id')
-  public async remove(@Param('id') id: string) {
-    return await this.blogCommentService.remove(id);
+  @Delete('comments/:id')
+  @ApiOperation({ summary: 'Удалить комментарий' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Comment deleted' })
+  public async remove(
+    @Param('id') id: string,
+    @Query('userId') userId: string
+  ) {
+    return await this.blogCommentService.remove(id, userId);
   }
 }

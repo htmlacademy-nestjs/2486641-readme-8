@@ -1,127 +1,128 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { PostType } from "@project/core";
-import { ArrayMaxSize, IsArray, IsBoolean, IsDateString, IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
-import { PostValidateMessage, PostValidateValue } from "../blog-post.constant";
+import { ArrayMaxSize, IsArray, IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString, IsUrl, Length, MaxLength, ValidateIf } from "class-validator";
+import { PostFieldDescription, PostValidateMessage, PostValidateValue } from "../blog-post.constant";
+import { TagsArray } from "./tags-array-validator";
+import { Transform } from "class-transformer";
 
 export class CreatePostDto {
-  @ApiProperty({ description: 'Тип контента' })
-  @IsIn(Object.values(PostType))
+  @ApiProperty(PostFieldDescription.Type)
+  @IsEnum(PostType)
   @IsNotEmpty()
   type: PostType;
 
-  @ApiProperty({ description: 'Список тэгов' })
+  @ApiProperty({...PostFieldDescription.Tags, type: 'array'})
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
   @ArrayMaxSize(
-    PostValidateValue.tags.maxCount,
-    { message: PostValidateMessage.tags.countMessage }
+    PostValidateValue.Tags.MaxCount,
+    { message: PostValidateMessage.Tags.CountMessage }
   )
   @Length(
-    PostValidateValue.tags.minLength,
-    PostValidateValue.tags.maxLength,
+    PostValidateValue.Tags.MinLength,
+    PostValidateValue.Tags.MaxLength,
     {
       each: true,
-      message: PostValidateMessage.tags.lengthMessage
+      message: PostValidateMessage.Tags.LengthMessage
     }
   )
+  @Transform(({ value }) => {
+    let tags: string[];
+    if ((typeof value) === 'string') {
+      tags = value.split(',');
+    } else {
+      tags = value;
+    }
+    const uniq: Set<string> = new Set(tags);
+    return Array.from(uniq).map((item) => item.toLowerCase());
+  }) 
+  @TagsArray()
   tags?: string[];
 
-  @ApiProperty({ description: 'Идентификатор автора публикации' })
   @IsMongoId()
   userId: string;
 
-  @ApiProperty({ description: 'Дата публикации' })
-  @IsDateString()
-  postDate?: Date;
-
-  @ApiProperty({ description: 'Признак "опубликована"' })
-  @IsBoolean({ message: PostValidateMessage.isPublished.formatMessage })
-  isPublished: boolean;
-
-  @ApiProperty({ description: 'Название публикации' })
-  @ValidateIf((o) => o.type === PostType.video)
+  @ApiProperty(PostFieldDescription.TitleVideo)
+  @ValidateIf((o) => o.type === PostType.Video)
   @Length(
-    PostValidateValue.titleVideo.minLength,
-    PostValidateValue.titleVideo.maxLength,
-    { message: PostValidateMessage.titleVideo.lengthMessage }
+    PostValidateValue.TitleVideo.MinLength,
+    PostValidateValue.TitleVideo.MaxLength,
+    { message: PostValidateMessage.TitleVideo.LengthMessage }
   )
   titleVideo?: string;
 
-  @ApiProperty({ description: 'Ссылка на видео' })
-  @ValidateIf((o) => o.type === PostType.video)
+  @ApiProperty(PostFieldDescription.UrlVideo)
+  @ValidateIf((o) => o.type === PostType.Video)
   @IsUrl()
   urlVideo?: string;
 
-  @ApiProperty({ description: 'Название публикации' })
-  @ValidateIf((o) => o.type === PostType.text)
+  @ApiProperty(PostFieldDescription.TitleText)
+  @ValidateIf((o) => o.type === PostType.Text)
   @Length(
-    PostValidateValue.titleText.minLength,
-    PostValidateValue.titleText.maxLength,
-    { message: PostValidateMessage.titleText.lengthMessage }
+    PostValidateValue.TitleText.MinLength,
+    PostValidateValue.TitleText.MaxLength,
+    { message: PostValidateMessage.TitleText.LengthMessage }
   )
   titleText?: string;
 
-  @ApiProperty({ description: 'Анонс публикации' })
-  @ValidateIf((o) => o.type === PostType.text)
+  @ApiProperty(PostFieldDescription.PreviewText)
+  @ValidateIf((o) => o.type === PostType.Text)
   @Length(
-    PostValidateValue.previewText.minLength,
-    PostValidateValue.previewText.maxLength,
-    { message: PostValidateMessage.previewText.lengthMessage }
+    PostValidateValue.PreviewText.MinLength,
+    PostValidateValue.PreviewText.MaxLength,
+    { message: PostValidateMessage.PreviewText.LengthMessage }
   )
   previewText?: string;
 
-  @ApiProperty({ description: 'Текст публикации' })
-  @ValidateIf((o) => o.type === PostType.text)
-  @IsOptional()
+  @ApiProperty(PostFieldDescription.Text)
+  @ValidateIf((o) => o.type === PostType.Text)
+  @IsNotEmpty()
   @IsString()
   @Length(
-    PostValidateValue.text.minLength, 
-    PostValidateValue.text.maxLength, 
-    { message: PostValidateMessage.text.lengthMessage }
+    PostValidateValue.Text.MinLength, 
+    PostValidateValue.Text.MaxLength, 
+    { message: PostValidateMessage.Text.LengthMessage }
   )
   text?: string;
 
-  @ApiProperty({ description: 'Текст цитаты' })
-  @ValidateIf((o) => o.type === PostType.quote)
-  @IsOptional()
+  @ApiProperty(PostFieldDescription.TextQuote)
+  @ValidateIf((o) => o.type === PostType.Quote)
   @IsString()
   @Length(
-    PostValidateValue.textQuote.minLength, 
-    PostValidateValue.textQuote.maxLength, 
-    { message: PostValidateMessage.textQuote.lengthMessage }
+    PostValidateValue.TextQuote.MinLength, 
+    PostValidateValue.TextQuote.MaxLength, 
+    { message: PostValidateMessage.TextQuote.LengthMessage }
   )
   textQuote?: string;
   
-  @ApiProperty({ description: 'Автор цитаты' })
-  @ValidateIf((o) => o.type === PostType.quote)
-  @IsOptional()
+  @ApiProperty(PostFieldDescription.AuthorQuote)
+  @ValidateIf((o) => o.type === PostType.Quote)
   @IsString()
   @Length(
-    PostValidateValue.authorQuote.minLength, 
-    PostValidateValue.authorQuote.maxLength, 
-    { message: PostValidateMessage.authorQuote.lengthMessage }
+    PostValidateValue.AuthorQuote.MinLength, 
+    PostValidateValue.AuthorQuote.MaxLength, 
+    { message: PostValidateMessage.AuthorQuote.LengthMessage }
   )
   authorQuote?: string;
 
-  @ApiProperty({ description: 'Фотография' })
-  @ValidateIf((o) => o.type === PostType.photo)
-  @IsOptional()
-  @IsUrl()
+  @ApiProperty(PostFieldDescription.UrlPhoto)
+  @ValidateIf((o) => o.type === PostType.Photo)
+  @IsString()
   urlPhoto?: string;
 
-  @ApiProperty({ description: 'Ссылка' })
-  @ValidateIf((o) => o.type === PostType.link)
+  @ApiProperty(PostFieldDescription.UrlLink)
+  @ValidateIf((o) => o.type === PostType.Link)
   @IsUrl()
   urlLink?: string;
 
-  @ApiProperty({ description: 'Описание ссылки' })
-  @ValidateIf((o) => o.type === PostType.link)
+  @ApiProperty(PostFieldDescription.DescriptionLink)
+  @ValidateIf((o) => o.type === PostType.Link)
   @IsOptional()
   @IsString()
   @MaxLength(
-    PostValidateValue.descriptionLink.maxLength, 
-    { message: PostValidateMessage.descriptionLink.lengthMessage }
+    PostValidateValue.DescriptionLink.MaxLength, 
+    { message: PostValidateMessage.DescriptionLink.LengthMessage }
   )
   descriptionLink?: string;
 }

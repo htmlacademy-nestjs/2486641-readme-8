@@ -1,20 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { AuthFieldDescription } from '../authentication-module/authentication.constant';
 
 export class UserRdo {
-  @ApiProperty({ description: 'User uniq ID', example: '1ae640b4-cd54-40ff-959c-96fc3fd2623c' })
+  @ApiProperty(AuthFieldDescription.Id)
   @Expose()
   public id: string;
 
-  @ApiProperty({ description: 'User avatar', example: '/images/user.png' })
+  @ApiProperty(AuthFieldDescription.Email)
   @Expose()
-  public avatar: string;
+  email: string;
 
-  @ApiProperty({ description: 'User email', example: 'example@email.com' })
+  @ApiProperty(AuthFieldDescription.Name)
   @Expose()
-  public email: string;
+  name: string;
 
-  @ApiProperty({ description: 'User name', example: 'Ivanov Ivan' })
+  @ApiProperty(AuthFieldDescription.CreatedAt)
   @Expose()
-  public name: string;
+  public createdAt: Date;
+
+  @ApiProperty(AuthFieldDescription.CountPosts)
+  @Expose()
+  public countPosts: number;
+
+  @ApiProperty(AuthFieldDescription.CountSubscribers)
+  @Expose()
+  public countSubscribers: number;
 }

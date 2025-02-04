@@ -1,20 +1,11 @@
 import { Expose } from 'class-transformer';
 import { BlogPostRdo } from './blog-post.rdo';
+import { ApiProperty } from '@nestjs/swagger';
+import { PaginationRdo } from '@project/core';
 
 
-export class BlogPostWithPaginationRdo {
+export class BlogPostWithPaginationRdo extends PaginationRdo {
   @Expose()
+  @ApiProperty({ description: 'Данные', type: [BlogPostRdo] })
   public entities: BlogPostRdo[];
-
-  @Expose()
-  public totalPages: number;
-
-  @Expose()
-  public totalItems: number;
-
-  @Expose()
-  public currentPage: number;
-
-  @Expose()
-  public itemsPerPage: number;
 }
