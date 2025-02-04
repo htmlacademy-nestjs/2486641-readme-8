@@ -1,124 +1,61 @@
 # Как работать над проектом
 
-## Окружение
-
-Для удобства работы над проектом используются инструменты из **Node.js** и **npm**. Все необходимые настройки произведены. Убедитесь, что на рабочем компьютере установлена **Node.js**, соответствующая актуальной версии. Актуальная версия **Node.js** указана в файле `package.json` в поле `node`. После, в терминале, перейти в директорию с проектом и _единожды_ запустите команду:
-
+## Перейти в папку с проектом
+```bash
+cd ~/readme/project
+```
+## Установить зависимости
 ```bash
 npm install
 ```
-
-Данная команда запустит процесс установки зависимостей проекта из **npm**.
-
-### Сценарии
-
-После создания проекта вам доступны следующие сценарии.
-
-#### Компиляция проекта
+## Скопировать .env-example -> .env:
 
 ```bash
-npm run compile
+cp apps/account/account.env-example apps/account/account.env
+cp apps/api/.env-example apps/api/.env
+cp apps/blog/blog.env-example apps/blog/blog.env
+cp apps/file-vault/file-vault.env-example apps/file-vault/file-vault.env
+cp apps/notify/notify.env-example apps/notify/notify.env
 ```
-
-Во время выполнения инструкций по компиляции проекта, в корне проекта создается директория `dist`, в которую будут помещены результирующие файлы.
-
-#### Очистка проекта
-
-```bash
-npm run clean
-```
-
-Во время выполнения инструкции по очистке проекта, директория `dist`, которая предназначена для хранения результирующих файлов, будет удалена.
-
-#### Сборка проекта
-
-```bash
-npm run build
-```
-
-В процессе сборки приложения, будут выполнены инструкции «Очистка проекта» и «Компиляция проекта». 
-
-#### Проверка линтером
-
-```bash
-npm run lint
-```
-
-Запуск проверки проекта статическим анализатором кода **ESLint**.
-
-Анализ кода производится только в файлах, которые находятся в директории `src`.
-
-**Обратите внимание**, при запуске данной команды, ошибки выводятся в терминал.
-
-#### Запуск REPL
-
-```bash
-npm run ts
-```
-
-Запуск `ts-node` позволяет вам напрямую выполнять код TypeScript на NodeJS без предварительной компиляции. 
-
-#### Установить docker containers для сервиса аккаунтов (account)
-
+## Docker
+### Установить docker containers для сервиса аккаунтов (account)
 ```bash
 docker compose --file ./apps/account/docker-compose.dev.yml --project-name "readme-account" --env-file ./apps/account/account.env up -d
 ```
-
-#### Установить docker containers для сервиса блога (blog)
-
+### Установить docker containers для сервиса блога (blog)
 ```bash
 docker compose --file ./apps/blog/docker-compose.dev.yml --env-file ./apps/blog/blog.env --project-name "readme-blog" up -d
 ```
-
-#### Установить docker containers для сервиса хранения файлов (file-vault)
-
+### Установить docker containers для сервиса хранения файлов (file-vault)
 ```bash
 docker compose --file ./apps/file-vault/file-vault.compose.dev.yml --env-file ./apps/file-vault/file-vault.env --project-name "readme-file-vault" up -d
 ```
-
-#### Установить docker containers для сервиса уведомлений (notify)
-
+### Установить docker containers для сервиса уведомлений (notify)
 ```bash
 docker compose --file ./apps/notify/notify.compose.dev.yml --env-file ./apps/notify/notify.env  --project-name "readme-notify" up -d
 ```
-
-#### Сгенерировать и выполнить скрипт создания моделей в БД Postgres
+## DB Postgres
+### Сгенерировать и выполнить скрипт создания моделей в БД Postgres
 ```bash
-npx nx run blog:db:migrate -- --name "init"
+npx nx run blog:db:migrate
 ```
-
-#### Сгенерировать клиент Prisma
+### Сгенерировать клиент Prisma
 ```bash
 npx nx run blog:db:generate
 ```
-
-#### Загрузить тестовые данные в БД Postgres
+### Загрузить тестовые данные Блога
 ```bash
 npx nx run blog:db:seed
 ```
-
-#### Запуск проекта
-
+## Загрузить тестовые данные Аккаунта
 ```bash
-npm start
+npx nx run account:db:seed
 ```
-
-В процессе запуска проекта будет выполнен процесс «Сборки проекта» и запуска результирующего кода.
-
-## Структура проекта
-
-### Директория `src`
-
-В директории размещаются исходный код проекта: компоненты, модули и так далее. Структура директории `src` может быть произвольной.
-
-### Файл `Readme.md`
-
-Файл, содержащий инструкции по работе с учебным репозиторием.
-
-### Файл `Contributing.md`
-
-Файл, содержащий советы и инструкции по внесению изменений в учебный репозиторий.
-
-### Остальное
-
-Все остальные файлы в проекте являются служебными. Пожалуйста, не удаляйте и не изменяйте их самовольно. Только если того требует задание или наставник.
+## Запус сервисов
+```bash
+npx nx run account:serve
+npx nx run blog:serve
+npx nx run file-storage:serve
+npx nx run notify:serve
+npx nx run api:serve
+```
