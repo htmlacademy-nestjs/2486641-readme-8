@@ -5,99 +5,99 @@ export const DEFAULT_SORT_DIRECTION = SortDirection.Desc;
 export const DEFAULT_PAGE_COUNT = 1;
 
 export const PostValidateValue = {
-  titleVideo: {
-    minLength: 20,
-    maxLength: 50,
+  TitleVideo: {
+    MinLength: 20,
+    MaxLength: 50,
   },
-  titleText: {
-    minLength: 20,
-    maxLength: 50,
+  TitleText: {
+    MinLength: 20,
+    MaxLength: 50,
   },
-  tags: {
-    maxCount: 8,
-    minLength: 3,
-    maxLength: 10,
+  Tags: {
+    MaxCount: 8,
+    MinLength: 3,
+    MaxLength: 10,
   },
-  descriptionLink: {
-    maxLength: 300
+  DescriptionLink: {
+    MaxLength: 300
   },
-  text: {
-    minLength: 100,
-    maxLength: 1024,
+  Text: {
+    MinLength: 100,
+    MaxLength: 1024,
   },
-  previewText: {
-    minLength: 50,
-    maxLength: 255,
+  PreviewText: {
+    MinLength: 50,
+    MaxLength: 255,
   },
-  textQuote: {
-    minLength: 20,
-    maxLength: 300,
+  TextQuote: {
+    MinLength: 20,
+    MaxLength: 300,
   },
-  authorQuote: {
-    minLength: 3,
-    maxLength: 50,
+  AuthorQuote: {
+    MinLength: 3,
+    MaxLength: 50,
   }
 } as const;
 
 export const PostValidateMessage = {
-  isPublished: {
-    formatMessage: 'isPublished must be boolean',
+  IsPublished: {
+    FormatMessage: 'isPublished must be boolean',
   },
-  titleVideo: {
-    formatMessage: 'title must be string',
-    lengthMessage: `min length for title is ${PostValidateValue.titleVideo.minLength}, max is ${PostValidateValue.titleVideo.maxLength}`,
+  TitleVideo: {
+    FormatMessage: 'title must be string',
+    LengthMessage: `min length for title is ${PostValidateValue.TitleVideo.MinLength}, max is ${PostValidateValue.TitleVideo.MaxLength}`,
   },
-  titleText: {
-    formatMessage: 'title must be string',
-    lengthMessage: `min length for title is ${PostValidateValue.titleText.minLength}, max is ${PostValidateValue.titleText.maxLength}`,
+  TitleText: {
+    FormatMessage: 'title must be string',
+    LengthMessage: `min length for title is ${PostValidateValue.TitleText.MinLength}, max is ${PostValidateValue.TitleText.MaxLength}`,
   },
-  tags: {
-    lengthMessage: `min length for tag is ${PostValidateValue.tags.minLength}, max is ${PostValidateValue.tags.maxLength}`,
-    countMessage: `max count of tags is ${PostValidateValue.tags.maxCount}`,
-    spaceMessage: `must not contain a space`,
-    firstSymbolMessage: `tag must start with a letter`
+  Tags: {
+    LengthMessage: `min length for tag is ${PostValidateValue.Tags.MinLength}, max is ${PostValidateValue.Tags.MaxLength}`,
+    CountMessage: `max count of Tags is ${PostValidateValue.Tags.MaxCount}`,
+    SpaceMessage: `must not contain a space`,
+    FirstSymbolMessage: `tag must start with a letter`
   },
-  descriptionLink: {
-    lengthMessage: `max length for description link is ${PostValidateValue.descriptionLink.maxLength}`,
+  DescriptionLink: {
+    LengthMessage: `max length for description link is ${PostValidateValue.DescriptionLink.MaxLength}`,
   },
-  text: {
-    lengthMessage: `min length for text is ${PostValidateValue.text.minLength}, max is ${PostValidateValue.text.maxLength}`,
+  Text: {
+    LengthMessage: `min length for text is ${PostValidateValue.Text.MinLength}, max is ${PostValidateValue.Text.MaxLength}`,
   },
-  previewText: {
-    lengthMessage: `min length for preview is ${PostValidateValue.previewText.minLength}, max is ${PostValidateValue.previewText.maxLength}`,
+  PreviewText: {
+    LengthMessage: `min length for preview is ${PostValidateValue.PreviewText.MinLength}, max is ${PostValidateValue.PreviewText.MaxLength}`,
   },
-  textQuote: {
-    lengthMessage: `min length for text quote is ${PostValidateValue.textQuote.minLength}, max is ${PostValidateValue.textQuote.maxLength}`,
+  TextQuote: {
+    LengthMessage: `min length for text quote is ${PostValidateValue.TextQuote.MinLength}, max is ${PostValidateValue.TextQuote.MaxLength}`,
   },
-  authorQuote: {
-    lengthMessage: `min length for author quote is ${PostValidateValue.authorQuote.minLength}, max is ${PostValidateValue.authorQuote.maxLength}`,
+  AuthorQuote: {
+    LengthMessage: `min length for author quote is ${PostValidateValue.AuthorQuote.MinLength}, max is ${PostValidateValue.AuthorQuote.MaxLength}`,
   },
 } as const;
 
 export const PostFieldDescription = {
-  id: { description: 'Уникальный идентификатор публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
-  originalId: { description: 'Идентификатор оригинальной публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
-  type: { description: 'Тип контента', example: PostType.text, enum: PostType },
-  tags: { description: 'Список тэгов', example: ['Tag1', 'Tag2'], required: false },
-  userId: { description: 'Идентификатор автора публикации', example: '6766e16f90c0264a74a1f9d4' },
-  originalUserId: { description: 'Идентификатор оригинального автора публикации', example: '6766e16f90c0264a74a1f9d4' },
-  postDate: { description: 'Дата публикации', example: new Date() },
-  isPublished: { description: 'Признак "опубликована"', example: 'true' },
-  titleVideo: { description: 'Название публикации', example: 'Моя видео публикация', required: false },
-  urlVideo: { description: 'Ссылка на видео', example: 'https://my-videos.com/example-video', required: false },
-  titleText: { description: 'Название публикации', example: 'Моя текстовая публикация', required: false },
-  previewText: { description: 'Анонс публикации', example: 'Пример анонса публикации', required: false },
-  text: { description: 'Текст публикации', example: 'Пример текста публикации', required: false },
-  textQuote: { description: 'Текст цитаты', example: `I'll be back`, required: false },
-  authorQuote: { description: 'Автор цитаты', example: 'T-900', required: false },
-  urlPhoto: { description: 'Фотография', example: 'upload/example.jpg', required: false },
-  urlLink: { description: 'Ссылка', example: 'https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme', required: false },
-  descriptionLink: { description: 'Описание ссылки', example: 'Личный проект «Readme»', required: false },
-  isReposted: { description: 'Признак "репост"', example: 'true' },
-  createdAt: { description: 'Дата создания', example: new Date() },
-  updatedAt: { description: 'Дата редактирования', example: new Date() },
-  commentsCount: { description: 'Количество комментариев', example: 50 },
-  likesCount: { description: 'Количество лайков', example: 77 },
+  Id: { description: 'Уникальный идентификатор публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  OriginalId: { description: 'Идентификатор оригинальной публикации', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  Type: { description: 'Тип контента', example: PostType.Text, enum: PostType },
+  Tags: { description: 'Список тэгов', example: ['Tag1', 'Tag2'], required: false },
+  UserId: { description: 'Идентификатор автора публикации', example: '6766e16f90c0264a74a1f9d4' },
+  OriginalUserId: { description: 'Идентификатор оригинального автора публикации', example: '6766e16f90c0264a74a1f9d4' },
+  PostDate: { description: 'Дата публикации', example: new Date() },
+  IsPublished: { description: 'Признак "опубликована"', example: 'true' },
+  TitleVideo: { description: 'Название публикации', example: 'Моя видео публикация', required: false },
+  UrlVideo: { description: 'Ссылка на видео', example: 'https://my-videos.com/example-video', required: false },
+  TitleText: { description: 'Название публикации', example: 'Моя текстовая публикация', required: false },
+  PreviewText: { description: 'Анонс публикации', example: 'Пример анонса публикации', required: false },
+  Text: { description: 'Текст публикации', example: 'Пример текста публикации', required: false },
+  TextQuote: { description: 'Текст цитаты', example: `I'll be back`, required: false },
+  AuthorQuote: { description: 'Автор цитаты', example: 'T-900', required: false },
+  UrlPhoto: { description: 'Фотография', example: 'upload/example.jpg', required: false },
+  UrlLink: { description: 'Ссылка', example: 'https://up.htmlacademy.ru/profession/fullstack/8/nodejs-2/8/project/readme', required: false },
+  DescriptionLink: { description: 'Описание ссылки', example: 'Личный проект «Readme»', required: false },
+  IsReposted: { description: 'Признак "репост"', example: 'true' },
+  CreatedAt: { description: 'Дата создания', example: new Date() },
+  UpdatedAt: { description: 'Дата редактирования', example: new Date() },
+  CommentsCount: { description: 'Количество комментариев', example: 50 },
+  LikesCount: { description: 'Количество лайков', example: 77 },
 } as const;
 
 export enum SortField {

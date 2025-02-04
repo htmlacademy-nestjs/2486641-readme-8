@@ -4,14 +4,14 @@ import { AuthorFieldDescription } from "../constant";
 
 export class AuthorRdo {
   @Expose()
-  @ApiProperty(AuthorFieldDescription.id)
+  @ApiProperty(AuthorFieldDescription.Id)
   public id: string;
 
   @Expose()
-  @ApiProperty(AuthorFieldDescription.name)
+  @ApiProperty(AuthorFieldDescription.Name)
   public name: string;
 
   @Expose()
-  @ApiProperty(AuthorFieldDescription.email)
+  @ApiProperty(AuthorFieldDescription.Email)
   public email: string;
 }

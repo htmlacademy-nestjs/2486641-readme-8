@@ -28,7 +28,7 @@ export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   // служебные
   public createdAt: Date;
   public updatedAt: Date;
-
+  // вычисляемые
   public commentsCount: number;
   public likesCount: number;
 

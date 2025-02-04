@@ -3,27 +3,27 @@ import { Expose } from 'class-transformer';
 import { AuthFieldDescription } from '../authentication-module/authentication.constant';
 
 export class UserRdo {
-  @ApiProperty(AuthFieldDescription.id)
+  @ApiProperty(AuthFieldDescription.Id)
   @Expose()
   public id: string;
 
-  @ApiProperty(AuthFieldDescription.email)
+  @ApiProperty(AuthFieldDescription.Email)
   @Expose()
   email: string;
 
-  @ApiProperty(AuthFieldDescription.name)
+  @ApiProperty(AuthFieldDescription.Name)
   @Expose()
   name: string;
 
-  @ApiProperty(AuthFieldDescription.createdAt)
+  @ApiProperty(AuthFieldDescription.CreatedAt)
   @Expose()
   public createdAt: Date;
 
-  @ApiProperty(AuthFieldDescription.countPosts)
+  @ApiProperty(AuthFieldDescription.CountPosts)
   @Expose()
   public countPosts: number;
 
-  @ApiProperty(AuthFieldDescription.countSubscribers)
+  @ApiProperty(AuthFieldDescription.CountSubscribers)
   @Expose()
   public countSubscribers: number;
 }

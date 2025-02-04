@@ -3,29 +3,29 @@ import { IsEmail, IsOptional, IsString, Length } from "class-validator";
 import { AuthenticationValidateMessage, AuthFieldDescription, AuthValidateValue } from "../authentication-module/authentication.constant";
 import 'multer';
 export class CreateUserDto {
-  @ApiProperty(AuthFieldDescription.email)
+  @ApiProperty(AuthFieldDescription.Email)
   @IsEmail({}, { message: AuthenticationValidateMessage.Email })
   public email: string;
 
-  @ApiProperty(AuthFieldDescription.name)
+  @ApiProperty(AuthFieldDescription.Name)
   @Length(
-    AuthValidateValue.name.minLength, 
-    AuthValidateValue.name.maxLength, 
+    AuthValidateValue.Name.MinLength, 
+    AuthValidateValue.Name.MaxLength, 
     { message: AuthenticationValidateMessage.Password }
   )
   @IsString()
   public name: string;
 
-  @ApiProperty(AuthFieldDescription.password)
+  @ApiProperty(AuthFieldDescription.Password)
   @Length(
-    AuthValidateValue.password.minLength, 
-    AuthValidateValue.password.maxLength, 
+    AuthValidateValue.Password.MinLength, 
+    AuthValidateValue.Password.MaxLength, 
     { message: AuthenticationValidateMessage.Password }
   )
   @IsString()
   public password: string;
 
-  @ApiProperty(AuthFieldDescription.avatar)
+  @ApiProperty(AuthFieldDescription.Avatar)
   @IsOptional()
   public avatar?: string;
 }

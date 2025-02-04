@@ -3,14 +3,14 @@ import { IsEmail, IsString, Length } from "class-validator";
 import { AuthenticationValidateMessage, AuthFieldDescription, AuthValidateValue } from "../authentication-module/authentication.constant";
 
 export class LoginUserDto {
-  @ApiProperty(AuthFieldDescription.email)
+  @ApiProperty(AuthFieldDescription.Email)
   @IsEmail({}, { message: AuthenticationValidateMessage.Email })
   public email: string;
 
-  @ApiProperty(AuthFieldDescription.password)
+  @ApiProperty(AuthFieldDescription.Password)
   @Length(
-    AuthValidateValue.password.minLength, 
-    AuthValidateValue.password.maxLength, 
+    AuthValidateValue.Password.MinLength, 
+    AuthValidateValue.Password.MaxLength, 
     { message: AuthenticationValidateMessage.Password }
   )
   @IsString()

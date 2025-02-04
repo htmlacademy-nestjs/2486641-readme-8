@@ -15,13 +15,13 @@ export class TagsArrayValidator implements ValidatorConstraintInterface {
 
       if (tag.includes(' ')) {
         throw new HttpException(
-          PostValidateMessage.tags.spaceMessage,
+          PostValidateMessage.Tags.SpaceMessage,
           HttpStatus.BAD_REQUEST);
       }
 
       if (!/^[a-z]/.test(tag)) {
         throw new HttpException(
-          PostValidateMessage.tags.firstSymbolMessage,
+          PostValidateMessage.Tags.FirstSymbolMessage,
           HttpStatus.BAD_REQUEST);
       }
     }

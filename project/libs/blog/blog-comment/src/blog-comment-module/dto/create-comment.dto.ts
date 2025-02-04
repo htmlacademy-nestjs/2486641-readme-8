@@ -8,11 +8,11 @@ export class CreateCommentDto {
   userId: string;
 
   @ApiProperty({ description: 'Текст комментария', example: 'Very good!' })
-  @IsString({ message: CommentValidateMessage.text.formatMessage })
+  @IsString({ message: CommentValidateMessage.Text.FormatMessage })
   @Length(
-    CommentValidateValue.text.minLength,
-    CommentValidateValue.text.maxLength,
-    { message: CommentValidateMessage.text.lengthMessage }
+    CommentValidateValue.Text.MinLength,
+    CommentValidateValue.Text.MaxLength,
+    { message: CommentValidateMessage.Text.LengthMessage }
   )
   public text: string;
 }

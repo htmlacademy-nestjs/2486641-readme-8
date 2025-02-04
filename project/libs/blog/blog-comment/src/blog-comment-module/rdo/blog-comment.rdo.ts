@@ -4,26 +4,26 @@ import { PostFieldDescription } from "../blog-comment.constant";
 
 export class BlogCommentRdo {
   @Expose()
-  @ApiProperty(PostFieldDescription.id)
+  @ApiProperty(PostFieldDescription.Id)
   public id: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.userId)
+  @ApiProperty(PostFieldDescription.UserId)
   userId: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.postId)
+  @ApiProperty(PostFieldDescription.PostId)
   postId: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.text)
+  @ApiProperty(PostFieldDescription.Text)
   text: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.createdAt)
+  @ApiProperty(PostFieldDescription.CreatedAt)
   createdAt?: Date;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.updatedAt)
+  @ApiProperty(PostFieldDescription.UpdatedAt)
   updatedAt?: Date
 }

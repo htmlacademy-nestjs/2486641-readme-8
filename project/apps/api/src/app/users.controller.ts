@@ -62,8 +62,8 @@ export class UsersController {
     @Body() dto: RegisterUserDto,
     @UploadedFile(new ParseFilePipe({
       validators: [
-        new MaxFileSizeValidator({ maxSize: AvatarParams.maxSize }),
-        new FileTypeValidator({ fileType: AvatarParams.fileType }),
+        new MaxFileSizeValidator({ maxSize: AvatarParams.MaxSize }),
+        new FileTypeValidator({ fileType: AvatarParams.FileType }),
       ],
       fileIsRequired: false,
     }),) avatar?: Express.Multer.File

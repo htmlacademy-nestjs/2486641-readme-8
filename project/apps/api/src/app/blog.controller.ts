@@ -76,8 +76,8 @@ export class BlogController {
     @UserId() userId: string,
     @UploadedFile(new ParseFilePipe({
           validators: [
-            new MaxFileSizeValidator({ maxSize: PhotoParams.maxSize }),
-            new FileTypeValidator({ fileType: PhotoParams.fileType }),
+            new MaxFileSizeValidator({ maxSize: PhotoParams.MaxSize }),
+            new FileTypeValidator({ fileType: PhotoParams.FileType }),
           ],
           fileIsRequired: false,
         }),) photo?: Express.Multer.File
@@ -87,7 +87,6 @@ export class BlogController {
       newPost.urlPhoto = await this.appService.uploadFile(photo);
     }
     newPost.userId = userId;
-    //const postData: CreateBlogPostDto = { ...dto, userId };
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Blog}/`, newPost);
     return data;
   }

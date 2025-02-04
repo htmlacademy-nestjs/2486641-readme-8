@@ -10,7 +10,7 @@ export class CreatePostDto extends OmitType(CreateBlogPostDto, ['userId', 'urlPh
       format: 'binary',
       required: false
     })
-    @ValidateIf((o) => o.type === PostType.photo)
+    @ValidateIf((o) => o.type === PostType.Photo)
     @IsNotEmpty()
     public photo?: Express.Multer.File;
 }

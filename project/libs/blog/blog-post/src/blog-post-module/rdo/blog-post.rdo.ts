@@ -5,94 +5,94 @@ import { PostFieldDescription } from '../blog-post.constant';
 
 export class BlogPostRdo {
   @Expose()
-  @ApiProperty(PostFieldDescription.id)
+  @ApiProperty(PostFieldDescription.Id)
   public id: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.type)
+  @ApiProperty(PostFieldDescription.Type)
   public type: PostType;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.tags)
+  @ApiProperty(PostFieldDescription.Tags)
   public tags: string[];
 
   @Expose()
-  @ApiProperty(PostFieldDescription.originalUserId)
+  @ApiProperty(PostFieldDescription.OriginalUserId)
   public originalUserId: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.userId)
+  @ApiProperty(PostFieldDescription.UserId)
   public userId: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.postDate)
+  @ApiProperty(PostFieldDescription.PostDate)
   public postDate: Date;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.isPublished)
+  @ApiProperty(PostFieldDescription.IsPublished)
   public isPublished: boolean;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.isReposted)
+  @ApiProperty(PostFieldDescription.IsReposted)
   public isReposted: boolean;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.originalId)
+  @ApiProperty(PostFieldDescription.OriginalId)
   public originalId: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.titleVideo)
+  @ApiProperty(PostFieldDescription.TitleVideo)
   public titleVideo?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.urlVideo)
+  @ApiProperty(PostFieldDescription.UrlVideo)
   public urlVideo?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.titleText)
+  @ApiProperty(PostFieldDescription.TitleText)
   public titleText?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.previewText)
+  @ApiProperty(PostFieldDescription.PreviewText)
   public previewText?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.text)
+  @ApiProperty(PostFieldDescription.Text)
   public text?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.textQuote)
+  @ApiProperty(PostFieldDescription.TextQuote)
   public textQuote?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.authorQuote)
+  @ApiProperty(PostFieldDescription.AuthorQuote)
   public authorQuote?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.urlPhoto)
+  @ApiProperty(PostFieldDescription.UrlPhoto)
   public urlPhoto?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.urlLink)
+  @ApiProperty(PostFieldDescription.UrlLink)
   public urlLink?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.descriptionLink)
+  @ApiProperty(PostFieldDescription.DescriptionLink)
   public descriptionLink?: string;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.createdAt)
+  @ApiProperty(PostFieldDescription.CreatedAt)
   public createdAt: Date;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.updatedAt)
+  @ApiProperty(PostFieldDescription.UpdatedAt)
   public updatedAt: Date;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.commentsCount)
+  @ApiProperty(PostFieldDescription.CommentsCount)
   public commentsCount: number;
 
   @Expose()
-  @ApiProperty(PostFieldDescription.likesCount)
+  @ApiProperty(PostFieldDescription.LikesCount)
   public likesCount: number;
 }

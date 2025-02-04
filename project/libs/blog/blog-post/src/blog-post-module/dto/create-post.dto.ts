@@ -6,25 +6,25 @@ import { TagsArray } from "./tags-array-validator";
 import { Transform } from "class-transformer";
 
 export class CreatePostDto {
-  @ApiProperty(PostFieldDescription.type)
+  @ApiProperty(PostFieldDescription.Type)
   @IsEnum(PostType)
   @IsNotEmpty()
   type: PostType;
 
-  @ApiProperty({...PostFieldDescription.tags, type: 'array'})
+  @ApiProperty({...PostFieldDescription.Tags, type: 'array'})
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
   @ArrayMaxSize(
-    PostValidateValue.tags.maxCount,
-    { message: PostValidateMessage.tags.countMessage }
+    PostValidateValue.Tags.MaxCount,
+    { message: PostValidateMessage.Tags.CountMessage }
   )
   @Length(
-    PostValidateValue.tags.minLength,
-    PostValidateValue.tags.maxLength,
+    PostValidateValue.Tags.MinLength,
+    PostValidateValue.Tags.MaxLength,
     {
       each: true,
-      message: PostValidateMessage.tags.lengthMessage
+      message: PostValidateMessage.Tags.LengthMessage
     }
   )
   @Transform(({ value }) => {
@@ -43,86 +43,86 @@ export class CreatePostDto {
   @IsMongoId()
   userId: string;
 
-  @ApiProperty(PostFieldDescription.titleVideo)
-  @ValidateIf((o) => o.type === PostType.video)
+  @ApiProperty(PostFieldDescription.TitleVideo)
+  @ValidateIf((o) => o.type === PostType.Video)
   @Length(
-    PostValidateValue.titleVideo.minLength,
-    PostValidateValue.titleVideo.maxLength,
-    { message: PostValidateMessage.titleVideo.lengthMessage }
+    PostValidateValue.TitleVideo.MinLength,
+    PostValidateValue.TitleVideo.MaxLength,
+    { message: PostValidateMessage.TitleVideo.LengthMessage }
   )
   titleVideo?: string;
 
-  @ApiProperty(PostFieldDescription.urlVideo)
-  @ValidateIf((o) => o.type === PostType.video)
+  @ApiProperty(PostFieldDescription.UrlVideo)
+  @ValidateIf((o) => o.type === PostType.Video)
   @IsUrl()
   urlVideo?: string;
 
-  @ApiProperty(PostFieldDescription.titleText)
-  @ValidateIf((o) => o.type === PostType.text)
+  @ApiProperty(PostFieldDescription.TitleText)
+  @ValidateIf((o) => o.type === PostType.Text)
   @Length(
-    PostValidateValue.titleText.minLength,
-    PostValidateValue.titleText.maxLength,
-    { message: PostValidateMessage.titleText.lengthMessage }
+    PostValidateValue.TitleText.MinLength,
+    PostValidateValue.TitleText.MaxLength,
+    { message: PostValidateMessage.TitleText.LengthMessage }
   )
   titleText?: string;
 
-  @ApiProperty(PostFieldDescription.previewText)
-  @ValidateIf((o) => o.type === PostType.text)
+  @ApiProperty(PostFieldDescription.PreviewText)
+  @ValidateIf((o) => o.type === PostType.Text)
   @Length(
-    PostValidateValue.previewText.minLength,
-    PostValidateValue.previewText.maxLength,
-    { message: PostValidateMessage.previewText.lengthMessage }
+    PostValidateValue.PreviewText.MinLength,
+    PostValidateValue.PreviewText.MaxLength,
+    { message: PostValidateMessage.PreviewText.LengthMessage }
   )
   previewText?: string;
 
-  @ApiProperty(PostFieldDescription.text)
-  @ValidateIf((o) => o.type === PostType.text)
+  @ApiProperty(PostFieldDescription.Text)
+  @ValidateIf((o) => o.type === PostType.Text)
   @IsNotEmpty()
   @IsString()
   @Length(
-    PostValidateValue.text.minLength, 
-    PostValidateValue.text.maxLength, 
-    { message: PostValidateMessage.text.lengthMessage }
+    PostValidateValue.Text.MinLength, 
+    PostValidateValue.Text.MaxLength, 
+    { message: PostValidateMessage.Text.LengthMessage }
   )
   text?: string;
 
-  @ApiProperty(PostFieldDescription.textQuote)
-  @ValidateIf((o) => o.type === PostType.quote)
+  @ApiProperty(PostFieldDescription.TextQuote)
+  @ValidateIf((o) => o.type === PostType.Quote)
   @IsString()
   @Length(
-    PostValidateValue.textQuote.minLength, 
-    PostValidateValue.textQuote.maxLength, 
-    { message: PostValidateMessage.textQuote.lengthMessage }
+    PostValidateValue.TextQuote.MinLength, 
+    PostValidateValue.TextQuote.MaxLength, 
+    { message: PostValidateMessage.TextQuote.LengthMessage }
   )
   textQuote?: string;
   
-  @ApiProperty(PostFieldDescription.authorQuote)
-  @ValidateIf((o) => o.type === PostType.quote)
+  @ApiProperty(PostFieldDescription.AuthorQuote)
+  @ValidateIf((o) => o.type === PostType.Quote)
   @IsString()
   @Length(
-    PostValidateValue.authorQuote.minLength, 
-    PostValidateValue.authorQuote.maxLength, 
-    { message: PostValidateMessage.authorQuote.lengthMessage }
+    PostValidateValue.AuthorQuote.MinLength, 
+    PostValidateValue.AuthorQuote.MaxLength, 
+    { message: PostValidateMessage.AuthorQuote.LengthMessage }
   )
   authorQuote?: string;
 
-  @ApiProperty(PostFieldDescription.urlPhoto)
-  @ValidateIf((o) => o.type === PostType.photo)
+  @ApiProperty(PostFieldDescription.UrlPhoto)
+  @ValidateIf((o) => o.type === PostType.Photo)
   @IsString()
   urlPhoto?: string;
 
-  @ApiProperty(PostFieldDescription.urlLink)
-  @ValidateIf((o) => o.type === PostType.link)
+  @ApiProperty(PostFieldDescription.UrlLink)
+  @ValidateIf((o) => o.type === PostType.Link)
   @IsUrl()
   urlLink?: string;
 
-  @ApiProperty(PostFieldDescription.descriptionLink)
-  @ValidateIf((o) => o.type === PostType.link)
+  @ApiProperty(PostFieldDescription.DescriptionLink)
+  @ValidateIf((o) => o.type === PostType.Link)
   @IsOptional()
   @IsString()
   @MaxLength(
-    PostValidateValue.descriptionLink.maxLength, 
-    { message: PostValidateMessage.descriptionLink.lengthMessage }
+    PostValidateValue.DescriptionLink.MaxLength, 
+    { message: PostValidateMessage.DescriptionLink.LengthMessage }
   )
   descriptionLink?: string;
 }

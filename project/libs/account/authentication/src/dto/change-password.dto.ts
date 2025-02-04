@@ -3,23 +3,23 @@ import { IsMongoId, IsString, Length } from "class-validator";
 import { AuthenticationValidateMessage, AuthFieldDescription, AuthValidateValue } from "../authentication-module/authentication.constant";
 
 export class ChangePasswordDto {
-  @ApiProperty(AuthFieldDescription.id)
+  @ApiProperty(AuthFieldDescription.Id)
   @IsMongoId()
   public userId: string;
 
-  @ApiProperty(AuthFieldDescription.currentPassword)
+  @ApiProperty(AuthFieldDescription.CurrentPassword)
   @Length(
-    AuthValidateValue.password.minLength, 
-    AuthValidateValue.password.maxLength, 
+    AuthValidateValue.Password.MinLength, 
+    AuthValidateValue.Password.MaxLength, 
     { message: AuthenticationValidateMessage.Password }
   )
   @IsString()
   public currentPassword: string;
 
-  @ApiProperty(AuthFieldDescription.newPassword)
+  @ApiProperty(AuthFieldDescription.NewPassword)
   @Length(
-    AuthValidateValue.password.minLength, 
-    AuthValidateValue.password.maxLength, 
+    AuthValidateValue.Password.MinLength, 
+    AuthValidateValue.Password.MaxLength, 
     { message: AuthenticationValidateMessage.Password }
   )
   @IsString()

@@ -33,73 +33,53 @@ export class BlogPostFactory implements EntityFactory<BlogPostEntity> {
     delete postEntity.likesCount;
     delete postEntity.createdAt;
     delete postEntity.updatedAt;
-    if (postEntity.type === PostType.text) {
-      // video  
+    if (postEntity.type === PostType.Text) {
       postEntity.titleVideo = null;
       postEntity.urlVideo = null;
-      // quote
       postEntity.textQuote = null;
       postEntity.authorQuote = null;
-      // photo
       postEntity.urlPhoto = null;
-      // link
       postEntity.urlLink = null;
       postEntity.descriptionLink = null;
     }
-    if (postEntity.type === PostType.link) {
-      // video  
+    if (postEntity.type === PostType.Link) {
       postEntity.titleVideo = null;
       postEntity.urlVideo = null;
-      // text
       postEntity.titleText = null;
       postEntity.previewText = null;
       postEntity.text = null;
-      // quote
       postEntity.textQuote = null;
       postEntity.authorQuote = null;
-      // photo
       postEntity.urlPhoto = null;
     }
-    if (postEntity.type === PostType.photo) {
-      // video  
+    if (postEntity.type === PostType.Photo) {
       postEntity.titleVideo = null;
       postEntity.urlVideo = null;
-      // text
       postEntity.titleText = null;
       postEntity.previewText = null;
       postEntity.text = null;
-      // quote
       postEntity.textQuote = null;
       postEntity.authorQuote = null;
-      // link
       postEntity.urlLink = null;
       postEntity.descriptionLink = null;
     }
-    if (postEntity.type === PostType.quote) {
-      // video  
+    if (postEntity.type === PostType.Quote) {
       postEntity.titleVideo = null;
       postEntity.urlVideo = null;
-      // text
       postEntity.titleText = null;
       postEntity.previewText = null;
       postEntity.text = null;
-      // photo
       postEntity.urlPhoto = null;
-      // link
       postEntity.urlLink = null;
       postEntity.descriptionLink = null;
     }
-    if (postEntity.type === PostType.video) {
-      // quote
+    if (postEntity.type === PostType.Video) {
       postEntity.textQuote = null;
       postEntity.authorQuote = null;
-      // text
       postEntity.titleText = null;
       postEntity.previewText = null;
       postEntity.text = null;
-      // photo
       postEntity.urlPhoto = null;
-      // link
       postEntity.urlLink = null;
       postEntity.descriptionLink = null;
     }

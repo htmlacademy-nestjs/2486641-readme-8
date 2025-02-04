@@ -1,9 +1,9 @@
 export const PostType = {
-  video: 'video',
-  text: 'text',
-  quote: 'quote',
-  photo: 'photo',
-  link: 'link'
+  Video: 'video',
+  Text: 'text',
+  Quote: 'quote',
+  Photo: 'photo',
+  Link: 'link'
 } as const;
 
 export type PostType = typeof PostType[keyof typeof PostType];

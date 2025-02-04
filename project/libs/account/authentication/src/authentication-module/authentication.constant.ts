@@ -12,33 +12,33 @@ export const AuthenticationResponseMessage = {
 } as const;
 
 export const AuthValidateValue = {
-  password: {
-    minLength: 6,
-    maxLength: 12,
+  Password: {
+    MinLength: 6,
+    MaxLength: 12,
   },
-  name: {
-    minLength: 3,
-    maxLength: 50,
+  Name: {
+    MinLength: 3,
+    MaxLength: 50,
   },
 } as const;
 
 export const AuthenticationValidateMessage = {
   Email: 'The email is not valid',
-  Password: `Min length for password is ${AuthValidateValue.password.minLength}, max is ${AuthValidateValue.password.maxLength}`,
-  Name: `Min length for name is ${AuthValidateValue.name.minLength}, max is ${AuthValidateValue.name.maxLength}`,
+  Password: `Min length for password is ${AuthValidateValue.Password.MinLength}, max is ${AuthValidateValue.Password.MaxLength}`,
+  Name: `Min length for name is ${AuthValidateValue.Name.MinLength}, max is ${AuthValidateValue.Name.MaxLength}`,
 } as const;
 
 export const AuthFieldDescription = {
-  id: { description: 'Уникальный идентификатор пользователя', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
-  name: { description: 'Имя пользователя', example: 'Ivanov Ivan' },
-  email: { description: 'Электронная почта пользователя', example: 'example@email.com' },
-  createdAt: { description: 'Дата регистрации', example: new Date() },
-  countPosts: { description: 'Количество публикаций пользователя', example: 77 },
-  countSubscribers: { description: 'Количество подписчиков пользователя', example: 0 },
-  accessToken: { description: 'Access token' },
-  refreshToken: { description: 'Refresh token' },
-  currentPassword: { description: 'Текущий пароль', example: 'Pa$$w0rD' },
-  newPassword: { description: 'Новый пароль', example: 'New_Pa$$w0rD' },
-  password: { description: 'Пароль', example: 'Pa$$w0rD' },
-  avatar: { description: 'Ссылка на аватар пользователя' },
+  Id: { description: 'Уникальный идентификатор пользователя', example: 'dd4319c5-5454-420c-8025-b4af417d7f47' },
+  Name: { description: 'Имя пользователя', example: 'Ivanov Ivan' },
+  Email: { description: 'Электронная почта пользователя', example: 'example@email.com' },
+  CreatedAt: { description: 'Дата регистрации', example: new Date() },
+  CountPosts: { description: 'Количество публикаций пользователя', example: 77 },
+  CountSubscribers: { description: 'Количество подписчиков пользователя', example: 0 },
+  AccessToken: { description: 'Access token' },
+  RefreshToken: { description: 'Refresh token' },
+  CurrentPassword: { description: 'Текущий пароль', example: 'Pa$$w0rD' },
+  NewPassword: { description: 'Новый пароль', example: 'New_Pa$$w0rD' },
+  Password: { description: 'Пароль', example: 'Pa$$w0rD' },
+  Avatar: { description: 'Ссылка на аватар пользователя' },
 } as const;
