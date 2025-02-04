@@ -51,7 +51,7 @@ npx nx run blog:db:seed
 ```bash
 npx nx run account:db:seed
 ```
-## Запус сервисов
+## Запуск сервисов
 ```bash
 npx nx run account:serve
 npx nx run blog:serve
